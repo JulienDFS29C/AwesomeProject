@@ -1,6 +1,6 @@
 import {StatusBar} from 'expo-status-bar';
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 // import TaskAdd from './Tasks.js'
 
 const SampleGoals = [
@@ -16,21 +16,28 @@ const SampleGoals = [
     "Organiser un meetup autour de la tech"];
 
 
-let i = 0;
-
-let initialText = 'add a task';
 
 export default function App() {
 
-    const [Goal, setGoal] = useState(SampleGoals);
-    const [Sthg ,setSthg ] = useState('');
+    const [goals, setGoal] = useState(SampleGoals);
+    const [text ,setText ] = useState('');
 
-    let sampleGoals = props => ({SampleGoals}) => {
+    // const ListGoals = props => ({ListGoals}) => {
+    //
+    //
+    //
+    //     <View>{ListGoals[i]}</View>
+    // }
 
-        <View>{SampleGoals}</View>
+    function addGoal(text, goals){
+        setGoal([...goals, text]);
+        setText("")
     }
 
+    useEffect(() => {
 
+        console.log("goals :", goals)
+    },[goals])
 
     return (
 
@@ -40,7 +47,7 @@ export default function App() {
 
                 <View style={styles.flex}>
                     <Text style={styles.todoList}>
-                        {'\n'}{Goal.map((goal) => <Text key={goal}> {goal}{'\n'}
+                        {'\n'}{goals.map((text) => <Text key={text}> {text}{'\n'}
                         <Button title="fait">
                             <Text>FAIT</Text></Button>{'\n'}></Text>
                     )}
@@ -49,13 +56,13 @@ export default function App() {
 
                     <View style={[styles.flexField]}>
                         <View>
-                            <TextInput placeholder="Add Task..." onChangeText={setSthg}/>
+                            <TextInput placeholder="Add Task..." onChangeText={setText} value={text}/>
 
                             <View>
                                 <TouchableOpacity
                                     onPress={() => {
 
-                                        setGoal(Sthg)
+                                        addGoal(text, goals)
 
                                     }}
                                 >
