@@ -2,8 +2,10 @@ import {StatusBar} from 'expo-status-bar';
 import {Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
 
+
 const uniqueId = () => {
-    return (Date.now() * (Math.random()) * 100000);
+
+    return ((Date.now() * Math.random()) * 10000);
 }
 
 const SampleGoals = [
@@ -19,10 +21,7 @@ const SampleGoals = [
     {id: uniqueId(), name: "Organiser un meetup autour de la tech"}];
 
 
-
 /////-----
-var getThisId = null;
-//TODO fontcion intermédiare
 
 
 export default function App() {
@@ -37,11 +36,20 @@ export default function App() {
         setText("")
     }
 
-    const removeGoal = (element, goals) => {
+    const removeGoal = (goals) => {
+        setModalVisible(false)
 
-        // const gethisId = element.id
-        const filteredGoals = goals.filter(goals => (goals.id !== getThisId))
+        console.log (this.getThisId)
+        const filteredGoals = goals.filter(goals => (goals.id !== this.getThisId))
         setGoals([...filteredGoals])
+    }
+
+    const okForRemoval = (element)=>{
+
+        setModalVisible(true)
+        this.getThisId = element.id;
+
+
     }
 
 
@@ -58,11 +66,12 @@ export default function App() {
                 {goals.map((element) => (
                     <View key={element.id} style={styles.goalItem}>
                         <Text style={styles.goalText}>{element.name}</Text>
+
                         <TouchableOpacity
+
                             onPress={() => {
-                                getThisId = goals.id;
-                                setModalVisible(true);
-                                /* removeGoal(element, goals)*/
+
+                                okForRemoval(element);
                             }}
                             style={styles.removeButton}>
                             <Text>X</Text>
@@ -105,7 +114,7 @@ export default function App() {
                             <Text style={styles.modalText}>Confirmez la suppression</Text>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
-                                onPress={() => removeGoal()}>
+                                onPress={() => removeGoal(goals)}>
                                 <Text style={styles.textStyle}>OK</Text>
                             </Pressable>
                             <Pressable
