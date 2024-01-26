@@ -1,6 +1,6 @@
 import {StatusBar} from 'expo-status-bar';
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {useEffect, useState} from "react";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { useState} from "react";
 // import TaskAdd from './Tasks.js'
 
 const SampleGoals = [
@@ -19,8 +19,9 @@ const SampleGoals = [
 
 export default function App() {
 
-    const [goals, setGoal] = useState(SampleGoals);
+    const [goals, setGoals] = useState(SampleGoals);
     const [text ,setText ] = useState('');
+
 
     // const ListGoals = props => ({ListGoals}) => {
     //
@@ -30,14 +31,19 @@ export default function App() {
     // }
 
     function addGoal(text, goals){
-        setGoal([...goals, text]);
+        setGoals([...goals, text]);
         setText("")
     }
 
-    useEffect(() => {
 
-        console.log("goals :", goals)
-    },[goals])
+    //TODO : fonction suppression element
+    const removeGoal = () => {
+
+
+       delete (goals.find(element=>goals.includes(element)));
+
+        setGoals([...goals])
+    }
 
     return (
 
@@ -47,9 +53,21 @@ export default function App() {
 
                 <View style={styles.flex}>
                     <Text style={styles.todoList}>
-                        {'\n'}{goals.map((text) => <Text key={text}> {text}{'\n'}
-                        <Button title="fait">
-                            <Text>FAIT</Text></Button>{'\n'}></Text>
+                        {'\n'}{goals.map((element) => <Text key={element}> {element}{'\n'}
+                            <View style={[styles.flexField]}>
+                               <TouchableOpacity
+
+                                            onPress={() => {
+
+                                                removeGoal(element)
+
+                                            }}
+                                        >
+                                            <Text>Done</Text>
+
+                                        </TouchableOpacity>
+                                    </View>
+                        </Text>
                     )}
 
                     </Text>
@@ -87,6 +105,7 @@ export default function App() {
             </Text>
         </ScrollView>)
 }
+
 
 
 const styles = StyleSheet.create({
