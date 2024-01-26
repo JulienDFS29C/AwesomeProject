@@ -1,9 +1,9 @@
 import {StatusBar} from 'expo-status-bar';
-import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
-// import TaskAdd from './Tasks.js'
-const uniqueId = () =>{
-    return  (Date.now()*(Math.random())*100000);
+
+const uniqueId = () => {
+    return (Date.now() * (Math.random()) * 100000);
 }
 
 const SampleGoals = [
@@ -19,10 +19,14 @@ const SampleGoals = [
     {id: uniqueId(), name: "Organiser un meetup autour de la tech"}];
 
 
+
 /////-----
+var getThisId = null;
+//TODO fontcion intermédiare
 
 
 export default function App() {
+
     const [goals, setGoals] = useState(SampleGoals);
     const [text, setText] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
@@ -33,28 +37,33 @@ export default function App() {
         setText("")
     }
 
-
     const removeGoal = (element, goals) => {
 
-        const thisId = element.id
-        const filteredGoals = goals.filter(goals => (goals.id !== thisId))
+        // const gethisId = element.id
+        const filteredGoals = goals.filter(goals => (goals.id !== getThisId))
         setGoals([...filteredGoals])
     }
+
 
     ///////-------------------/////////
 
     return (
 
+
         <ScrollView style={styles.scrollView}>
 
-            <View><Text style={styles.title}>==>  MY GOAL APP</Text></View>
+            <View><Text style={styles.title}>==> MY GOAL APP</Text></View>
 
             <View style={styles.container}>
                 {goals.map((element) => (
                     <View key={element.id} style={styles.goalItem}>
                         <Text style={styles.goalText}>{element.name}</Text>
                         <TouchableOpacity
-                            onPress={() => removeGoal(element, goals)}
+                            onPress={() => {
+                                getThisId = goals.id;
+                                setModalVisible(true);
+                                /* removeGoal(element, goals)*/
+                            }}
                             style={styles.removeButton}>
                             <Text>X</Text>
                         </TouchableOpacity>
@@ -62,28 +71,66 @@ export default function App() {
                 ))}
             </View>
 
-                    <View style={[styles.flexField]}>
-                        <View style={styles.goalInput}>
-                            <TextInput  placeholder="Add Task..." onChangeText={setText} value={text}/>
+            <View style={[styles.flexField]}>
+                <View style={styles.goalInput}>
+                    <TextInput placeholder="Add Task..." onChangeText={setText} value={text}/>
 
-                            <View style={styles.addButton}>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        console.log();
+                    <View style={styles.addButton}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                addGoal(text, goals)
+                            }}
+                        >
+                            <Text>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
 
-                                        addGoal(text, goals)
-                                    }}
-                                >
-                                    <Text>Submit</Text>
-                                </TouchableOpacity>
-                            </View>
+
+            {/*            *******MODAL********/}
+
+
+            <View style={styles.centeredView}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Confirmez la suppression</Text>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => removeGoal()}>
+                                <Text style={styles.textStyle}>OK</Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setModalVisible(!modalVisible)}>
+                                <Text style={styles.textStyle}>CANCEL</Text>
+                            </Pressable>
                         </View>
                     </View>
+                </Modal>
+                <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={() => setModalVisible(true)}>
+                    <Text style={styles.textStyle}>Show Modal</Text>
 
-                <StatusBar style="auto"/>
+                </Pressable>
+            </View>
 
+            <StatusBar style="auto"/>
         </ScrollView>)
+
 }
+
+
+/*******CSS-JSON*******/
 
 
 const styles = StyleSheet.create({
@@ -98,10 +145,10 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
 
-    title:{
-      fontStyle: "italic",
-      fontWeight: "bold",
-      fontSize: 25,
+    title: {
+        fontStyle: "italic",
+        fontWeight: "bold",
+        fontSize: 25,
         marginTop: 40,
         marginLeft: 40,
         color: "cadetblue"
@@ -160,6 +207,49 @@ const styles = StyleSheet.create({
         padding: 8,
         backgroundColor: 'cadetblue',
         borderRadius: 5,
+    },
+
+
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
     },
 });
 
