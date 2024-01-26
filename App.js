@@ -1,48 +1,39 @@
 import {StatusBar} from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import { useState} from "react";
+import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {useState} from "react";
 // import TaskAdd from './Tasks.js'
 
 const SampleGoals = [
-    "Faire un triathlon",
-    "Faire les courses",
-    "Aller à la salle 3 fois par semaine",
-    "Monter à plus de 5000m d altitude",
-    "Acheter mon premier appartement",
-    "Perdre 5 kgs",
-    "Gagner en productivité",
-    "Apprendre un nouveau langage",
-    "Faire une mission en freelance",
-    "Organiser un meetup autour de la tech"];
-
+    {id: 1, name: "Faire un triathlon"},
+    {id: 2, name: "Faire les courses"},
+    {id: 3, name: "Aller à la salle 3 fois par semaine"},
+    {id: 4, name: "Monter à plus de 5000m d altitude"},
+    {id: 5, name: "Acheter mon premier appartement"},
+    {id: 6, name: "Perdre 5 kgs"},
+    {id: 7, name: "Gagner en productivité"},
+    {id: 8, name: "Apprendre un nouveau langage"},
+    {id: 9, name: "Faire une mission en freelance"},
+    {id: 10, name: "Organiser un meetup autour de la tech"}];
 
 
 export default function App() {
 
     const [goals, setGoals] = useState(SampleGoals);
-    const [text ,setText ] = useState('');
+    const [text, setText] = useState('');
 
 
-    // const ListGoals = props => ({ListGoals}) => {
-    //
-    //
-    //
-    //     <View>{ListGoals[i]}</View>
-    // }
-
-    function addGoal(text, goals){
-        setGoals([...goals, text]);
+    function addGoal(text, goals) {
+        setGoals([...goals, {id: goals.length + 1, name: text}]);
         setText("")
     }
 
 
-    //TODO : fonction suppression element
-    const removeGoal = () => {
+    const removeGoal = (element, goals) => {
 
+        const thisId = element.id
+        const filteredGoals = goals.filter(goals => (goals.id !== thisId))
+        setGoals([...filteredGoals])
 
-       delete (goals.find(element=>goals.includes(element)));
-
-        setGoals([...goals])
     }
 
     return (
@@ -50,23 +41,20 @@ export default function App() {
         <ScrollView style={styles.scrollView}>
             <Text style={styles.container}>
 
-
                 <View style={styles.flex}>
                     <Text style={styles.todoList}>
-                        {'\n'}{goals.map((element) => <Text key={element}> {element}{'\n'}
+                        {'\n'}{goals.map((element, id) => <Text key={element.id}> {element.name}{'\n'}
                             <View style={[styles.flexField]}>
-                               <TouchableOpacity
+                                <TouchableOpacity
 
-                                            onPress={() => {
+                                    onPress={() => {
 
-                                                removeGoal(element)
-
-                                            }}
-                                        >
-                                            <Text>Done</Text>
-
-                                        </TouchableOpacity>
-                                    </View>
+                                        removeGoal(element, goals)
+                                    }}
+                                >
+                                    <Text>X</Text>
+                                </TouchableOpacity>
+                            </View>
                         </Text>
                     )}
 
@@ -81,21 +69,13 @@ export default function App() {
                                     onPress={() => {
 
                                         addGoal(text, goals)
-
                                     }}
                                 >
                                     <Text>Submit</Text>
-
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
-
-
-
-                  {/*  <Button title="ADD" onPress={() => SampleGoals.push(text)} > </Button>*/}
-
-
 
                 </View>
                 );
@@ -105,7 +85,6 @@ export default function App() {
             </Text>
         </ScrollView>)
 }
-
 
 
 const styles = StyleSheet.create({
@@ -138,7 +117,6 @@ const styles = StyleSheet.create({
 
     createButton: {
         backgroundColor: 'green'
-
     }
 
 });
