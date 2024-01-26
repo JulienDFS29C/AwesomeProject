@@ -125,12 +125,12 @@ export default function App() {
                         </View>
                     </View>
                 </Modal>
-                <Pressable
+            {/*    <Pressable
                     style={[styles.button, styles.buttonOpen]}
                     onPress={() => setModalVisible(true)}>
-                    <Text style={styles.textStyle}>Show Modal</Text>
+                    <Text style={styles.textStyle}></Text>
 
-                </Pressable>
+                </Pressable>*/}
             </View>
 
             <StatusBar style="auto"/>
