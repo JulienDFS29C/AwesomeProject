@@ -2,7 +2,6 @@ import {StatusBar} from 'expo-status-bar';
 import {Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
 
-
 const uniqueId = () => {
 
     return ((Date.now() * Math.random()) * 10000);
@@ -55,8 +54,6 @@ export default function App() {
         console.log (edit, this.getThisname)
 
         setGoals([...goals])
-
-
 
     }
 
@@ -170,7 +167,7 @@ export default function App() {
                         <View style={styles.modalView}>
 
 
-                            <TextInput placeholder="modifiez..." onChangeText={setEdit} value={edit}/>
+                            <TextInput style={styles.modalInput} placeholder="modifiez..." onChangeText={setEdit} value={edit}/>
                             <Text style={styles.modalText}>Confirmez la modification</Text>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
@@ -192,11 +189,11 @@ export default function App() {
 
                 </Pressable>*/}
 
-                
+
                 {/*update*/}
-                
-                
-                
+
+
+
 
             </View>
 
@@ -281,7 +278,7 @@ const styles = StyleSheet.create({
     editButton: {
         marginLeft: 10,
         padding: 5,
-        backgroundColor: '#cadetblue',
+        backgroundColor: 'cadetblue',
         borderRadius: 5,
     },
 
@@ -347,8 +344,20 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     modalText: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: 'red',
         marginBottom: 15,
         textAlign: 'center',
     },
-});
+    modalInput: {
+        paddingVertical: 10,
+        paddingHorizontal: 60,
+        backgroundColor: 'antiquewhite',
+            marginBottom: 15,
+            textAlign: 'center',
+    },
+}
+);
+
 
