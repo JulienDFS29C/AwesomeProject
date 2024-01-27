@@ -28,7 +28,11 @@ export default function App() {
 
     const [goals, setGoals] = useState(SampleGoals);
     const [text, setText] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalRemoveVisible, setModalRemoveVisible] = useState(false);
+    const [modalEditVisible, setModalEditVisible] = useState(false);
+    const [edit, setEdit] = useState('');
+
+
 
 
     function addGoal(text, goals) {
@@ -37,19 +41,36 @@ export default function App() {
     }
 
     const removeGoal = (goals) => {
-        setModalVisible(false)
+        setModalRemoveVisible(false)
 
         console.log (this.getThisId)
         const filteredGoals = goals.filter(goals => (goals.id !== this.getThisId))
         setGoals([...filteredGoals])
     }
+    const editGoal = (edit, goals) => {
+        setModalEditVisible(false)
+        const editableGoal = goals.find((goals) => goals.name === this.getThisname)
+        setEdit(edit)
+        editableGoal.name = edit;
+        console.log (edit, this.getThisname)
+
+        setGoals([...goals])
+
+
+
+    }
+
 
     const okForRemoval = (element)=>{
 
-        setModalVisible(true)
+        setModalRemoveVisible(true)
         this.getThisId = element.id;
+    }
 
+    const okForEdition = (element)=>{
 
+        setModalEditVisible(true)
+        this.getThisname = element.name;
     }
 
 
@@ -76,6 +97,16 @@ export default function App() {
                             style={styles.removeButton}>
                             <Text>X</Text>
                         </TouchableOpacity>
+
+                        <TouchableOpacity
+
+                            onPress={() => {
+
+                                okForEdition(element);
+                            }}
+                            style={styles.editButton}>
+                            <Text>E</Text>
+                        </TouchableOpacity>
                     </View>
                 ))}
             </View>
@@ -99,15 +130,16 @@ export default function App() {
 
             {/*            *******MODAL********/}
 
+                        {/*remove*/}
 
             <View style={styles.centeredView}>
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={modalVisible}
+                    visible={modalRemoveVisible}
                     onRequestClose={() => {
                         Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
+                        setModalRemoveVisible(!modalRemoveVisible);
                     }}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
@@ -119,7 +151,35 @@ export default function App() {
                             </Pressable>
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
-                                onPress={() => setModalVisible(!modalVisible)}>
+                                onPress={() => setModalRemoveVisible(!modalRemoveVisible)}>
+                                <Text style={styles.textStyle}>CANCEL</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalEditVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setModalEditVisible(!modalEditVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+
+
+                            <TextInput placeholder="modifiez..." onChangeText={setEdit} value={edit}/>
+                            <Text style={styles.modalText}>Confirmez la modification</Text>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => editGoal(edit,goals)}>
+                                <Text style={styles.textStyle}>OK</Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setModalEditVisible(!modalEditVisible)}>
                                 <Text style={styles.textStyle}>CANCEL</Text>
                             </Pressable>
                         </View>
@@ -127,10 +187,17 @@ export default function App() {
                 </Modal>
             {/*    <Pressable
                     style={[styles.button, styles.buttonOpen]}
-                    onPress={() => setModalVisible(true)}>
+                    onPress={() => setModalRemoveVisible(true)}>
                     <Text style={styles.textStyle}></Text>
 
                 </Pressable>*/}
+
+                
+                {/*update*/}
+                
+                
+                
+
             </View>
 
             <StatusBar style="auto"/>
@@ -211,6 +278,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
+    editButton: {
+        marginLeft: 10,
+        padding: 5,
+        backgroundColor: '#cadetblue',
+        borderRadius: 5,
+    },
+
     addButton: {
         marginLeft: 10,
         padding: 8,
@@ -226,6 +300,22 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+
+    modalEditView: {
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
