@@ -1,6 +1,7 @@
 import {StatusBar} from 'expo-status-bar';
 import {Alert, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
+import {OptionButton} from "./components/OptionButton";
 
 const uniqueId = () => {
 
@@ -85,25 +86,37 @@ export default function App() {
                     <View key={element.id} style={styles.goalItem}>
                         <Text style={styles.goalText}>{element.name}</Text>
 
-                        <TouchableOpacity
 
-                            onPress={() => {
+                       <Text style={styles.removeButton}>
+                           <OptionButton element = {element} function = {okForRemoval} doThat = "X" optStyle="{styles.removeButton}"></OptionButton>
+                       </Text>
 
-                                okForRemoval(element);
-                            }}
-                            style={styles.removeButton}>
-                            <Text>X</Text>
-                        </TouchableOpacity>
 
-                        <TouchableOpacity
+                        {/*<TouchableOpacity*/}
 
-                            onPress={() => {
+                        {/*    onPress={() => {*/}
 
-                                okForEdition(element);
-                            }}
-                            style={styles.editButton}>
-                            <Text>E</Text>
-                        </TouchableOpacity>
+                        {/*        okForRemoval(element);*/}
+                        {/*    }}*/}
+                        {/*    style={styles.removeButton}>*/}
+                        {/*    <Text>X</Text>*/}
+                        {/*</TouchableOpacity>*/}
+
+                       <Text style={styles.editButton}>
+                           <OptionButton element = {element} function = {okForEdition} doThat = "E" optStyle="{styles.editButton}"></OptionButton>
+                       </Text>
+
+
+
+                        {/*<TouchableOpacity*/}
+
+                        {/*    onPress={() => {*/}
+
+                        {/*        okForEdition(element);*/}
+                        {/*    }}*/}
+                        {/*    style={styles.editButton}>*/}
+                        {/*    <Text>E</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 ))}
             </View>
@@ -268,19 +281,21 @@ const styles = StyleSheet.create({
     goalText: {
         flex: 1,
     },
-    removeButton: {
-        marginLeft: 10,
-        padding: 5,
-        backgroundColor: '#d31616',
-        borderRadius: 5,
-    },
+        removeButton: {
+            marginLeft: 10,
+            padding: 5,
+            backgroundColor: '#b32d2e',
+            borderRadius: 5,
+        },
 
-    editButton: {
-        marginLeft: 10,
-        padding: 5,
-        backgroundColor: 'cadetblue',
-        borderRadius: 5,
-    },
+        editButton: {
+            marginLeft: 10,
+            padding: 5,
+            backgroundColor: 'cadetblue',
+            borderRadius: 5,
+        },
+
+
 
     addButton: {
         marginLeft: 10,
