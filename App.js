@@ -1,21 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Image,StyleSheet, Text, View} from 'react-native';
 
 import * as Location from 'expo-location';
 
  function App() {
 
-    const [location, setLocation] = useState(null);
+    const [loc, setLoc] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const [WData, setWData] = useState(null);
+    let [WData, setWData] = useState({});
 
-    const latitude = location?.coords?.latitude;
-    const longitude = location?.coords?.longitude;
+    let latitude = loc?.coords?.latitude;
+    let longitude = loc?.coords?.longitude;
 
-    const API_KEY = '9cb58d87fbca1bbc43e019ad115b1a9c'
-    const API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
+    const API_KEY = '886705b4c1182eb1c69f28eb8c520e20'
+    // let API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
 
-    useEffect(() => {
+
+
+     useEffect(() => {
         (async () => {
 
             let {status} = await Location.requestForegroundPermissionsAsync();
@@ -25,16 +27,18 @@ import * as Location from 'expo-location';
             }
 
             let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
-        getApiData();
+            setLoc(location);
+            console.log(location)
+            getApiData();
+
         })();
     }, [])
 
     let text = 'Waiting..';
     if (errorMsg) {
         text = errorMsg;
-    } else if (location) {
-        text = JSON.stringify(location);
+    } else if (loc) {
+        text = JSON.stringify(loc);
 
     }
 
@@ -54,19 +58,17 @@ import * as Location from 'expo-location';
 
 
 function getApiData() {
-        console.log(API_URL);
+    let API_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
+
     fetch(API_URL)
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
                 throw new Error('pas de données trouvées');
             }
 
-            return response.json()
-        .then(json => {
-                    console.log(json)
-                    setWData(json);
-
-                });
+            const json = await response.json();
+            console.log(json);
+            setWData(json);
         }).catch(e=>{
         console.log(API_URL);
             console.log('erreur : ' , e);
@@ -74,19 +76,28 @@ function getApiData() {
 }
 
 
-    //******************************************************************************
-    // getApiData();
-    //     {if (WData != null) {
-    //     let temp = Math.round(WData.main.temp)
+     let tempCelsius = Math.round(WData.main.temp)
+
+     let name = WData.name;
+     let description = WData.weather?.[0]?.description;
+     let imageUrl = `https://openweathermap.org/img/wn/${WData.weather?.[0]?.icon}@2x.png`
 
 
-        return (
 
-            <View style={styles.container}>
-                <Text style={styles.paragraph}>{text}</Text>
-                <Text style={styles.paragraph}>{WData.name}</Text>
+     return (
+         <View style={styles.container}>
+             <Text>{text}</Text>
+                <Text>{name}</Text>
+                <Text>{description}</Text>
+             <Text>{tempCelsius}°C</Text>
+             <Image
+                 style={styles.tinyLogo}
+                 source={{
+                     uri: imageUrl,
+                 }}
+             />
+                <Text></Text>
 
-                <Text>{}</Text>
             </View>
         );
 
@@ -99,8 +110,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    }, paragraph: undefined
-
+    },
+    tinyLogo: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 100,
+        height: 100
+    }
 });
 
  export default App;
