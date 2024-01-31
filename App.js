@@ -32,7 +32,7 @@ import * as Location from 'expo-location';
             getApiData();
 
         })();
-    }, [])
+    }, [WData])
 
     let text = 'Waiting..';
     if (errorMsg) {
@@ -76,20 +76,21 @@ function getApiData() {
 }
 
 
-     let tempCelsius = Math.round(WData.main.temp)
+     // let tempCelsius = Math.round(WData.main.temp)
 
-     let name = WData.name;
-     let description = WData.weather?.[0]?.description;
+     let name = WData?.name ?? 'Chargement...';
+
+     let description = WData.weather?.[0]?.description?? 'Chargement...';
      let imageUrl = `https://openweathermap.org/img/wn/${WData.weather?.[0]?.icon}@2x.png`
 
 
 
      return (
          <View style={styles.container}>
-             <Text>{text}</Text>
+             {/*<Text>{text}</Text>*/}
                 <Text>{name}</Text>
                 <Text>{description}</Text>
-             <Text>{tempCelsius}°C</Text>
+             {/*<Text>{tempCelsius}°C</Text>*/}
              <Image
                  style={styles.tinyLogo}
                  source={{
