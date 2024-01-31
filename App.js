@@ -28,11 +28,11 @@ import * as Location from 'expo-location';
 
             let location = await Location.getCurrentPositionAsync({});
             setLoc(location);
-            console.log(location)
+            // console.log(location)
             getApiData();
 
         })();
-    }, [WData])
+    }, [loc])
 
     let text = 'Waiting..';
     if (errorMsg) {
