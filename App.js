@@ -10,6 +10,7 @@ import Foundation from "react-native-vector-icons/Foundation"
 import {IngredientSearchScreen} from "./Screens/IngredientSearchScreen";
 import {NameSearchScreen} from "./Screens/NameSearchScreen"
 import {IngredientLookupScreen} from "./Screens/IngredientLookupScreen"
+import {FavoritesScreen} from "./Screens/FavoritesScreen";
 const Stack = createNativeStackNavigator();
 
 
@@ -39,6 +40,12 @@ const BottomTabNavigator = () => {
                 headerShown: false, tabBarLabel: 'Search',
                 tabBarIcon: ({color, size}) => (
                     <Foundation name="magnifying-glass" color='cadetblue' size={size}/>
+                ),
+            }}/>
+            <Tab.Screen name="Fav" component={FavoritesScreen} options={{
+                headerShown: false, tabBarLabel: 'Fav',
+                tabBarIcon: ({color, size}) => (
+                    <Foundation name="star" color='cadetblue' size={size}/>
                 ),
             }}/>
 

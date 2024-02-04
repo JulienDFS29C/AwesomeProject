@@ -20,6 +20,7 @@ const CocktailMaker = ({name, pic, id, navigation}) => (
 
             </Pressable>
             <Text>{name}</Text>
+
         </FadeInView>
     </View>
 )
@@ -30,6 +31,10 @@ export default function HomeScreen({navigation}) {
     console.log("in the HomeScreen")
     let [Cocktails, setCocktails] = useState([]);
 
+
+    const HandleAddToFavorites = (id) => {
+        setFavorites([...favorites, id]);
+    };
 
     useEffect(() => {
         console.log("useeffect update")
@@ -85,6 +90,7 @@ export default function HomeScreen({navigation}) {
                     }
                     keyExtractor={item => item.idDrink}
                 />
+
             </View>
         </SafeAreaView>)
 }

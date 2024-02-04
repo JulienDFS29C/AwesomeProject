@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 
 
+
+
 const OneCocktailMaker = ({
                               name, pic, id, ingredient1, ingredient2, ingredient3, ingredient4,
                               ingredient5, ingredient6, ingredient7, receipe, navigation
@@ -13,6 +15,15 @@ const OneCocktailMaker = ({
         <Pressable onPress={() =>
 
             navigation.goBack()}><Text>Retour</Text></Pressable>
+        <Pressable onPress={() =>
+
+            navigation.navigate("Fav", {id: id})
+
+
+
+        }><Text>ADD</Text></Pressable>
+
+
 
         <Image style={styles.pic}
 
@@ -30,6 +41,7 @@ const OneCocktailMaker = ({
 
         <Text>{receipe}</Text>
 
+
     </View>
 )
 
@@ -37,7 +49,6 @@ export function DetailsScreen({navigation}) {
 
 
     console.log("in the Detail")
-
     const [OneCocktail, setOneCocktail] = useState([]);
     const route = useRoute();
     let {id} = route.params;
