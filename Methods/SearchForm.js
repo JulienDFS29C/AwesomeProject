@@ -1,5 +1,4 @@
-import {Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
-import {useRoute} from "@react-navigation/native";
+import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import {useState} from "react";
 
 export const SearchForm = ({navigation})=>{
@@ -15,6 +14,7 @@ export const SearchForm = ({navigation})=>{
                          onChangeText={setIngredient}
                          value={ingredient}
                          style={styles.input}
+                         placeholder={'enter an ingredient'}
             />
 
             <Pressable
@@ -24,7 +24,7 @@ export const SearchForm = ({navigation})=>{
                     navigation.navigate('Search', { ingredient: ingredient })
                 }}
             >
-                <Text>Submit</Text>
+                <Text>GO</Text>
             </Pressable>
         </View>
     );
