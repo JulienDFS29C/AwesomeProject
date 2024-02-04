@@ -1,31 +1,38 @@
-import {Button, FlatList, Image, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useCallback, useEffect, useState} from "react";
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {DetailsScreen} from "./DetailsScreen";
-
+import {FadeInView} from '../effects/FadeinView'
 
 
 const API_KEY = 9973533;
 
 
-const AlphaCocktailMaker = ({name, pic, id}) => (
+const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
 
 
     <View style={styles.container}>
+        <FadeInView>
+            <Pressable onPress={() =>
 
-        <Image style={styles.pic}
+                navigation.navigate('Details', {id: id})}>
+                <Image style={styles.pic}
+                       source={{uri: pic}}
 
-               source= {{uri: pic}}
-        />
-        <Text>{name}</Text>
+                />
+
+            </Pressable>
+
+            <Text>{name}</Text>
+
+        </FadeInView>
     </View>
 )
 
 const AlphaStack = createNativeStackNavigator();
 
 
-export default function TenRandomScreen({ navigation }) {
+export default function TenRandomScreen({navigation}) {
 
     let [TenRandomCocktails, setTenRandomCocktails] = useState([]);
 
@@ -38,18 +45,17 @@ export default function TenRandomScreen({ navigation }) {
     );
 
 
-
     console.log("in the Random")
 
 
     useEffect(() => {
         console.log("useeffect update")
-        getRandomAPI().then(r => setTenRandomCocktails(r.json.drinks));
+        getRandomAPI();
 
     }, [useFocusEffect])
 
 
-    async function getRandomAPI() {
+    function getRandomAPI() {
 
 
         console.log('getRandomApi')
@@ -84,10 +90,12 @@ export default function TenRandomScreen({ navigation }) {
                     data={TenRandomCocktails}
                     renderItem={({item}) =>
                         <AlphaCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
-                                            id={item.idDrink}/>
+                                            id={item.idDrink} navigation={navigation}/>
                     }
                     keyExtractor={item => item.idDrink}
                 />
+
+
             </View>
 
 
@@ -97,32 +105,32 @@ export default function TenRandomScreen({ navigation }) {
 }
 
 
-    const styles = StyleSheet.create({
-            container: {
-                flex: 1,
-                backgroundColor: 'rgba(255,255,255,0.7)',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                marginTop : 40,
-                marginVertical: 8,
-                marginHorizontal: 16,
-                borderRadius: 20,
-            },
+const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: 'rgba(255,255,255,0.7)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            marginTop: 40,
+            marginVertical: 8,
+            marginHorizontal: 16,
+            borderRadius: 20,
+        },
 
-            title: {
-                fontSize: 20,
-                color: 'black',
-                paddingBottom: 10
-            },
+        title: {
+            fontSize: 20,
+            color: 'black',
+            paddingBottom: 10
+        },
 
-            pic: {
-                height: 250,
-                width: 250,
-                borderRadius: 20,
-                padding: 5,
+        pic: {
+            height: 250,
+            width: 250,
+            borderRadius: 20,
+            padding: 5,
 
-            }
         }
-    )
+    }
+)
 

@@ -4,7 +4,7 @@ import {useRoute} from "@react-navigation/native";
 
 
 const OneCocktailMaker = ({name, pic, id, ingredient1, ingredient2, ingredient3, ingredient4,
-ingredient5, ingredient6, ingredient7, receipe}) => (
+                              ingredient5, ingredient6, ingredient7, receipe}) => (
 
 
     <View style={styles.container}>

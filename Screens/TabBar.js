@@ -1,19 +1,15 @@
-import HomeScreen from "./HomeScreen";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, TouchableOpacity } from 'react-native'
-
-
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Text, TouchableOpacity, View} from 'react-Image'
 
 
 const Tab = createBottomTabNavigator();
 
 
-
-export function MyTabBar({ state, descriptors, navigation }) {
+export function MyTabBar({state, descriptors, navigation}) {
     return (
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
             {state.routes.map((route, index) => {
-                const { options } = descriptors[route.key];
+                const {options} = descriptors[route.key];
                 const label =
                     options.tabBarLabel !== undefined
                         ? options.tabBarLabel
@@ -45,14 +41,15 @@ export function MyTabBar({ state, descriptors, navigation }) {
                 return (
                     <TouchableOpacity
                         accessibilityRole="button"
-                        accessibilityState={isFocused ? { selected: true } : {}}
+                        accessibilityState={isFocused ? {selected: true} : {}}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
                         onPress={onPress}
                         onLongPress={onLongPress}
-                        style={{ flex: 1 }}
+                        style={{flex: 1}}
+
                     >
-                        <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
+                        <Text style={{color: isFocused ? '#673ab7' : '#222'}}>
                             {label}
                         </Text>
                     </TouchableOpacity>
