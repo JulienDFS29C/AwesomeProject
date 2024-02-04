@@ -1,26 +1,17 @@
-import {
-    FlatList,
-    Image,
-    Pressable,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    View
-} from "react-native";
+import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {FadeInView} from "../effects/FadeinView";
 import {useRoute} from "@react-navigation/native";
 
-export function SearchScreen({navigation}) {
+export function NameSearchScreen({navigation}) {
 
     const route = useRoute();
-    let {ingredient} = route.params;
+    let {name} = route.params;
 
-    let [CockailsByIngredient, setCockailsByIngredient] = useState([])
+    let [CockailByName, setCockailByName] = useState([])
 
 
-
-    const CocktailMakerByIngredient = ({name, pic, navigation, id}) => (
+    const CocktailMakerByName = ({name, pic, navigation, id}) => (
 
 
         <View style={styles.container}>
@@ -42,24 +33,24 @@ export function SearchScreen({navigation}) {
 
 
     useEffect(() => {
-        console.log("useEffect update avec ingredient: ", ingredient);
-        getByIngredient();
-    }, [ingredient]);
+        console.log("useEffect update avec name: ", name);
+        getByName();
+    }, [name]);
 
 
-    function getByIngredient() {
+    function getByName() {
         console.log('By Ingredient');
-         fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`)
+        fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`)
             .then(async response => {
                 if (!response.ok) {
                     throw new Error('pas de données cocktail trouvées');
                 }
-            console.log(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${ingredient}`)
+                console.log(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${name}`)
                 const json = await response.json();
                 console.log("IDIND = " + json)
 
-                setCockailsByIngredient(json.drinks)
-                console.log("données settées :" + CockailsByIngredient)
+                setCockailByName(json.drinks)
+                console.log("données settées :" + CockailByName)
                 console.log(json.drinks)
 
             }).catch(e => {
@@ -68,23 +59,29 @@ export function SearchScreen({navigation}) {
         })
 
     }
+
     return (
 
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <FlatList
-                data={CockailsByIngredient}
-                renderItem={({item}) => (
-                    <CocktailMakerByIngredient
-                        name={item.strDrink}
-                        pic={item.strDrinkThumb}
-                        id={item.idDrink}
-                        navigation={navigation}
-                    />
-                )}
-                keyExtractor={item => item.idDrink}
-            />
-                </View>
+
+                <Pressable onPress={() =>
+
+                    navigation.goBack()}><Text>Retour</Text></Pressable>
+
+                <FlatList
+                    data={CockailByName}
+                    renderItem={({item}) => (
+                        <CocktailMakerByName
+                            name={item.strDrink}
+                            pic={item.strDrinkThumb}
+                            id={item.idDrink}
+                            navigation={navigation}
+                        />
+                    )}
+                    keyExtractor={item => item.idDrink}
+                />
+            </View>
         </SafeAreaView>)
 
 

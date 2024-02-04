@@ -10,16 +10,16 @@ const CocktailMaker = ({name, pic, id, navigation}) => (
     <View style={styles.container}>
         <FadeInView>
 
-        <Pressable onPress={() =>
+            <Pressable onPress={() =>
 
-            navigation.navigate('Details', {id: id})}>
-            <Image style={styles.pic}
-                   source={{uri: pic}}
+                navigation.navigate('Details', {id: id})}>
+                <Image style={styles.pic}
+                       source={{uri: pic}}
 
-            />
+                />
 
-        </Pressable>
-        <Text>{name}</Text>
+            </Pressable>
+            <Text>{name}</Text>
         </FadeInView>
     </View>
 )
@@ -44,7 +44,7 @@ export default function HomeScreen({navigation}) {
 
         console.log('getAPI')
 
-        fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/popular.php`)
+        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic`)
 
             .then(async response => {
                 if (!response.ok) {
@@ -74,6 +74,7 @@ export default function HomeScreen({navigation}) {
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
+                <Text>APPLI MOCHE MAIS FONCTIONNELLE</Text>
 
                 <FlatList
 

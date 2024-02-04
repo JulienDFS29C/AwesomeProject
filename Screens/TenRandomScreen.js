@@ -12,6 +12,8 @@ const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
 
 
     <View style={styles.container}>
+
+
         <FadeInView>
             <Pressable onPress={() =>
 
@@ -84,7 +86,9 @@ export default function TenRandomScreen({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Pressable onPress={() =>
 
+                    navigation.goBack()}><Text>Retour</Text></Pressable>
 
                 <FlatList
                     data={TenRandomCocktails}
