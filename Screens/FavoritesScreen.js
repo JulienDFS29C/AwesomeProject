@@ -9,7 +9,6 @@ export function FavoritesScreen({navigation}) {
     const [favorites, setFavorites] = useState([]);
     const route = useRoute();
     let id = route.params ? route.params.id : null;
-    let favTab =[];
 
 
 
@@ -19,11 +18,15 @@ export function FavoritesScreen({navigation}) {
 
         <View style={styles.container}>
             <FadeInView>
+                <Pressable onPress={() =>
 
+                    navigation.navigate('Details', {id: id})}>
                     <Image style={styles.pic}
                            source={{uri: pic}}
 
                     />
+
+                </Pressable>
 
                 <Text>{name}</Text>
             </FadeInView>
