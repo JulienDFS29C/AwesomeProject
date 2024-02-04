@@ -32,9 +32,7 @@ export default function HomeScreen({navigation}) {
     let [Cocktails, setCocktails] = useState([]);
 
 
-    const HandleAddToFavorites = (id) => {
-        setFavorites([...favorites, id]);
-    };
+
 
     useEffect(() => {
         console.log("useeffect update")
@@ -49,7 +47,7 @@ export default function HomeScreen({navigation}) {
 
         console.log('getAPI')
 
-        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic`)
+        fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic`)
 
             .then(async response => {
                 if (!response.ok) {
