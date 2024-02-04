@@ -3,8 +3,6 @@ import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 
 
-
-
 const OneCocktailMaker = ({
                               name, pic, id, ingredient1, ingredient2, ingredient3, ingredient4,
                               ingredient5, ingredient6, ingredient7, receipe, navigation
@@ -20,9 +18,7 @@ const OneCocktailMaker = ({
             navigation.navigate("Fav", {id: id})
 
 
-
         }><Text>ADD</Text></Pressable>
-
 
 
         <Image style={styles.pic}
@@ -31,13 +27,20 @@ const OneCocktailMaker = ({
         />
         <Text style={styles.title}>{name}</Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient1})}><Text>{ingredient1}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient2})}><Text>{ingredient2}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient3})}><Text>{ingredient3}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient4})}><Text>{ingredient4}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient5})}><Text>{ingredient5}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient6})}><Text>{ingredient6}</Text></TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient7})}><Text>{ingredient7}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient1})}><Text>{ingredient1}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient2})}><Text>{ingredient2}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient3})}><Text>{ingredient3}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient4})}><Text>{ingredient4}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient5})}><Text>{ingredient5}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient6})}><Text>{ingredient6}</Text></TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('IngredientLookUp', {ingredient: ingredient7})}><Text>{ingredient7}</Text></TouchableOpacity>
 
         <Text>{receipe}</Text>
 

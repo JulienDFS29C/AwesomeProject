@@ -32,8 +32,6 @@ export default function HomeScreen({navigation}) {
     let [Cocktails, setCocktails] = useState([]);
 
 
-
-
     useEffect(() => {
         console.log("useeffect update")
         getCockAPI();

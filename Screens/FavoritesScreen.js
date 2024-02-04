@@ -11,13 +11,22 @@ export function FavoritesScreen({navigation}) {
     let id = route.params ? route.params.id : null;
 
 
+    const removeFav = (idToRemove) => {
+        setFavorites((currentFavorites) =>
+            currentFavorites.filter(favorite => favorite.idDrink !== idToRemove)
+        );
+    };
 
 
-    const FavCocktailMaker = ({name, pic}) => (
+    const FavCocktailMaker = ({name, pic, id}) => (
 
 
         <View style={styles.container}>
             <FadeInView>
+                <Pressable onPress={() =>
+                    removeFav(id)
+                }>remove from Favs</Pressable>
+
                 <Pressable onPress={() =>
 
                     navigation.navigate('Details', {id: id})}>
@@ -32,6 +41,7 @@ export function FavoritesScreen({navigation}) {
             </FadeInView>
         </View>
     )
+
 
     useEffect(() => {
         if (id) {
@@ -80,7 +90,7 @@ export function FavoritesScreen({navigation}) {
     };
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             {favorites.length <= 0 ? renderDefaultContent() : (
                 <FlatList
                     data={favorites}

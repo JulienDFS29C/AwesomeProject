@@ -5,8 +5,6 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {FadeInView} from '../effects/FadeinView'
 
 
-
-
 const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
 
 

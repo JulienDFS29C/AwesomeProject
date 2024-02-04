@@ -11,6 +11,7 @@ import {IngredientSearchScreen} from "./Screens/IngredientSearchScreen";
 import {NameSearchScreen} from "./Screens/NameSearchScreen"
 import {IngredientLookupScreen} from "./Screens/IngredientLookupScreen"
 import {FavoritesScreen} from "./Screens/FavoritesScreen";
+
 const Stack = createNativeStackNavigator();
 
 
@@ -65,9 +66,11 @@ export default function App() {
             <Stack.Navigator>
                 <Stack.Screen name="Tab" component={BottomTabNavigator} options={{headerShown: false}}/>
                 <Stack.Screen name="Details" component={DetailsScreen} options={{headerShown: false}}/>
-                <Stack.Screen name="IngredientSearch" component={IngredientSearchScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="IngredientSearch" component={IngredientSearchScreen}
+                              options={{headerShown: false}}/>
                 <Stack.Screen name="NameSearch" component={NameSearchScreen} options={{headerShown: false}}/>
-                <Stack.Screen name="IngredientLookUp" component={IngredientLookupScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="IngredientLookUp" component={IngredientLookupScreen}
+                              options={{headerShown: false}}/>
 
 
             </Stack.Navigator>

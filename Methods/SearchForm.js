@@ -8,16 +8,14 @@ export const SearchForm = ({navigation}) => {
     const [ingredientFO, setIngredientFO] = useState('')
 
 
-
-
     return (
 
-/*
-        ***********************BY INGREDIENT**********************
-*/
+        /*
+                ***********************BY INGREDIENT**********************
+        */
 
 
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <TextInput editable
                        maxLength={40}
                        onChangeText={setIngredient}
@@ -36,7 +34,7 @@ export const SearchForm = ({navigation}) => {
                 <Text>GO</Text>
             </Pressable>
 
-{/*
+            {/*
          **************************BY NAME*************************
 */}
 
@@ -59,34 +57,31 @@ export const SearchForm = ({navigation}) => {
             </Pressable>
 
 
-{/*
+            {/*
         *****************INGREDIENT LOOKUP *********************
 */}
 
 
-        <TextInput editable
-                   maxLength={40}
-                   onChangeText={setIngredientFO}
-                   value={ingredientFO}
-                   style={styles.input}
-                   placeholder={'find an ingredient'}
-        />
+            <TextInput editable
+                       maxLength={40}
+                       onChangeText={setIngredientFO}
+                       value={ingredientFO}
+                       style={styles.input}
+                       placeholder={'find an ingredient'}
+            />
 
-        <Pressable
-            style={styles.button}
-            onPress={() => {
+            <Pressable
+                style={styles.button}
+                onPress={() => {
 
-                navigation.navigate('IngredientLookUp', {ingredient: ingredientFO})
-            }}
-        >
-            <Text>GO</Text>
-        </Pressable>
-
-
+                    navigation.navigate('IngredientLookUp', {ingredient: ingredientFO})
+                }}
+            >
+                <Text>GO</Text>
+            </Pressable>
 
 
-    </View>
-
+        </View>
 
 
     );
