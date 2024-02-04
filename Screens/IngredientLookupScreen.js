@@ -1,5 +1,4 @@
 import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
-import {useFocusEffect, useRoute} from "@react-navigation/native";
 import {FadeInView} from "../effects/FadeinView";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {useEffect, useState} from "react";
