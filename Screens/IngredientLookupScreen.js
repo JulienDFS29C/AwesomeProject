@@ -62,7 +62,7 @@ export function IngredientLookupScreen({navigation}) {
 
 
         <SafeAreaView style={styles.container}>
-            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+            <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
                 <ScrollView>
                     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                         {LookupIngredient.length <= 0 ? renderDefaultContent() : (

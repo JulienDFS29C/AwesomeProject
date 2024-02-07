@@ -77,7 +77,7 @@ export function NameSearchScreen({navigation}) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+            <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                         <View style={styles.upContainer}>

@@ -101,7 +101,7 @@ export function FavoritesScreen({navigation}) {
         <SafeAreaView style={styles.container}>
 
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
                     <View style={styles.upContainer}>
                         <Text style={styles.mainTitle}>YOUR FAVORITES</Text>
                         <Text style={styles.title}>Touch any picture for details</Text>
