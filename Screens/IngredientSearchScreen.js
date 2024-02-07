@@ -1,7 +1,10 @@
-import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {FadeInView} from "../effects/FadeinView";
 import {useRoute} from "@react-navigation/native";
+import Foundation from "react-native-vector-icons/Foundation";
+
+const iconSize = 28;
 
 export function IngredientSearchScreen({navigation}) {
 
@@ -9,12 +12,14 @@ export function IngredientSearchScreen({navigation}) {
     let {ingredient} = route.params;
 
     let [CockailsByIngredient, setCockailsByIngredient] = useState([])
+    const image = '../assets/images/CocktailBG.jpg'
 
 
     const CocktailMakerByIngredient = ({name, pic, navigation, id}) => (
 
 
         <View style={styles.container}>
+
             <FadeInView>
 
                 <Pressable onPress={() =>
@@ -27,14 +32,14 @@ export function IngredientSearchScreen({navigation}) {
 
                 </Pressable>
                 <View style={styles.optionsLine}>
-                    <Text>{name}</Text>
+                    <Text style={styles.plainText}>{name}</Text>
                     <Pressable onPress={() =>
 
                         navigation.navigate("Fav", {id: id})}>
 
 
-                        <Image style={styles.navPic}
-                               source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                        <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
+
                 </View>
             </FadeInView>
         </View>
@@ -68,10 +73,14 @@ export function IngredientSearchScreen({navigation}) {
         })
 
     }
+
     const renderDefaultContent = () => {
         return (
             <View style={styles.defaultContainer}>
-                <Text style={styles.defaultText}>No Result</Text>
+                <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+
+                    <Text style={styles.defaultText}>No Result</Text>
+                </ImageBackground>
             </View>
         );
     };
@@ -80,26 +89,34 @@ export function IngredientSearchScreen({navigation}) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Pressable onPress={() =>
+            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
-                    navigation.goBack()}>
-                    <Image style={styles.navPic}
-                           source={require('../assets/images/go-previous.png')}></Image></Pressable>
-                {CockailsByIngredient.length <= 0 ? renderDefaultContent() : (
-                <FlatList
-                    data={CockailsByIngredient}
-                    renderItem={({item}) => (
-                        <CocktailMakerByIngredient
-                            name={item.strDrink}
-                            pic={item.strDrinkThumb}
-                            id={item.idDrink}
-                            navigation={navigation}
-                        />
-                    )}
-                    keyExtractor={item => item.idDrink}
-                />)}
-            </View>
+
+                    <View style={styles.upContainer}>
+                        <Text style={styles.title}>Results for :</Text><Text
+                        style={styles.mainTitle}>{ingredient}</Text>
+                        <Text style={styles.title}>Touch ingredient for details</Text>
+
+                        <Pressable onPress={() =>
+
+                            navigation.goBack()}>
+                            <Foundation style={styles.navPic} name="rewind" color='black' size={iconSize}/></Pressable></View>
+                    {CockailsByIngredient.length <= 0 ? renderDefaultContent() : (
+                        <FlatList
+                            data={CockailsByIngredient}
+                            renderItem={({item}) => (
+                                <CocktailMakerByIngredient
+                                    name={item.strDrink}
+                                    pic={item.strDrinkThumb}
+                                    id={item.idDrink}
+                                    navigation={navigation}
+                                />
+                            )}
+                            keyExtractor={item => item.idDrink}
+                        />)}
+                </View>
+            </ImageBackground>
         </SafeAreaView>)
 
 
@@ -108,23 +125,41 @@ export function IngredientSearchScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'cadetblue',
-        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.7)',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexDirection: 'column',
+        // marginTop: 40,
+        // marginVertical: 5,
+        // marginHorizontal: 5,
+        // borderRadius: 20,
+    },
+    bgImage: {
+        flex: 1,
         justifyContent: 'center',
+
+
+    },
+    upContainer: {
         flexDirection: 'column',
-        marginTop: 40,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.5)',
+        // height: 280,
+        width: 280,
+        padding: 5,
+        marginHorizontal: 15
+
     },
     mainTitle: {
         fontWeight: 'bold',
         color: 'antiquewhite',
-        fontSize: 25,
+        fontSize: 30,
         marginTop: 25,
         marginBottom: 3
     },
-
     title: {
         fontSize: 20,
         color: 'antiquewhite',
@@ -135,6 +170,8 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 20,
         padding: 5,
+        marginHorizontal: 15,
+
 
     },
     navPic: {
@@ -147,19 +184,32 @@ const styles = StyleSheet.create({
     optionsLine: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 15
+
     },
     defaultContainer: {
-        flex: 1,
+        // flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
 
+
     },
     defaultText: {
-        backgroundColor :'antiquewhite',
-        borderRadius : 10,
+        backgroundColor: 'antiquewhite',
+        borderRadius: 10,
+
         fontSize: 18,
-        padding : 5,
+        padding: 5,
+        marginHorizontal: 120,
+
         color: 'grey',
+    },
+    plainText: {
+
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        marginHorizontal: 5,
+
     },
 })

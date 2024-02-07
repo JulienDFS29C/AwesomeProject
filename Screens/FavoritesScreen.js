@@ -1,7 +1,8 @@
-import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 import {FadeInView} from "../effects/FadeinView";
+import Foundation from "react-native-vector-icons/Foundation";
 
 
 export function FavoritesScreen({navigation}) {
@@ -9,6 +10,8 @@ export function FavoritesScreen({navigation}) {
     const [favorites, setFavorites] = useState([]);
     const route = useRoute();
     let id = route.params ? route.params.id : null;
+    const iconSize = 28
+    const image = '../assets/images/CocktailBG.jpg'
 
 
     const removeFav = (idToRemove) => {
@@ -30,15 +33,12 @@ export function FavoritesScreen({navigation}) {
                            source={{uri: pic}}
 
                     />
-
                 </Pressable>
                 <View style={styles.optionsLine}>
-                    <Text>{name}</Text>
+                    <Text style={styles.plainText}>{name}</Text>
                     <Pressable onPress={() =>
                         removeFav(id)
-                    }>
-                        <Image style={styles.navPic}
-                               source={require('../assets/images/trash.png')}></Image></Pressable>
+                    }><Foundation style={styles.navPic} name="trash" color='black' size={iconSize}/></Pressable>
                 </View>
             </FadeInView>
         </View>
@@ -92,7 +92,7 @@ export function FavoritesScreen({navigation}) {
     const renderDefaultContent = () => {
         return (
             <View style={styles.defaultContainer}>
-                <Text style={styles.defaultText}>Aucun favori pour le moment</Text>
+                <Text style={styles.defaultText}>No Favorite for now</Text>
             </View>
         );
     };
@@ -101,18 +101,24 @@ export function FavoritesScreen({navigation}) {
         <SafeAreaView style={styles.container}>
 
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={styles.mainTitle}> YOUR FAVORITES</Text>
-                <Text style={styles.title}>Touch any picture for details</Text>
-                {favorites.length <= 0 ? renderDefaultContent() : (
-                    <FlatList
+                <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                    <View style={styles.upContainer}>
+                        <Text style={styles.mainTitle}>YOUR FAVORITES</Text>
+                        <Text style={styles.title}>Touch any picture for details</Text>
+                        <View>
+                            {favorites.length <= 0 ? renderDefaultContent() : (
+                                <FlatList
 
-                        data={favorites}
-                        renderItem={({item}) => <FavCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
-                                                                  id={item.idDrink} navigation={navigation}/>}
-                        keyExtractor={item => item.idDrink}
-                    />
-                )}
-            </View>
+                                    data={favorites}
+                                    renderItem={({item}) => <FavCocktailMaker name={item.strDrink}
+                                                                              pic={item.strDrinkThumb}
+                                                                              id={item.idDrink}
+                                                                              navigation={navigation}/>}
+                                    keyExtractor={item => item.idDrink}
+                                />
+                            )}
+                        </View></View>
+                </ImageBackground></View>
         </SafeAreaView>
 
     );
@@ -121,19 +127,38 @@ export function FavoritesScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'cadetblue',
-        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.7)',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexDirection: 'column',
+        // marginTop: 40,
+        // marginVertical: 5,
+        // marginHorizontal: 5,
+        // borderRadius: 20,
+    },
+    bgImage: {
+        flex: 1,
         justifyContent: 'center',
+
+
+    },
+    upContainer: {
         flexDirection: 'column',
-        marginTop: 40,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.5)',
+        // height: 280,
+        width: 280,
+        padding: 5,
+        marginHorizontal: 15
+
     },
     mainTitle: {
         fontWeight: 'bold',
         color: 'antiquewhite',
-        fontSize: 25,
+        fontSize: 30,
         marginTop: 25,
         marginBottom: 3
     },
@@ -143,34 +168,23 @@ const styles = StyleSheet.create({
         color: 'antiquewhite',
         paddingBottom: 10
     },
+    titlePic: {
+        height: 70,
+        width: 70,
+        borderRadius: 50,
+        padding: 15,
+        marginTop: 30,
+        marginBottom: -80
 
+    },
     pic: {
         height: 250,
         width: 250,
         borderRadius: 20,
         padding: 5,
-        marginTop: 15,
-        marginBottom: 3,
+        marginHorizontal: 15,
 
-    },
 
-    defaultContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-
-    },
-    defaultText: {
-        backgroundColor: 'antiquewhite',
-        borderRadius: 10,
-        fontSize: 18,
-        padding: 5,
-        color: 'grey',
-    },
-    optionsLine: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
     },
     navPic: {
 
@@ -178,4 +192,18 @@ const styles = StyleSheet.create({
         height: 25,
         width: 25,
     },
+
+    optionsLine: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 15
+
+    },
+    plainText: {
+
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+
+    }
 })

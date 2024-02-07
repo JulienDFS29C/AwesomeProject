@@ -1,8 +1,20 @@
-import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+    FlatList,
+    Image,
+    ImageBackground,
+    Pressable,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
 import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
+import Foundation from "react-native-vector-icons/Foundation";
 
-
+const image = '../assets/images/CocktailBG.jpg'
+const iconSize = 28;
 const OneCocktailMaker = ({
                               name, pic, id, ingredient1, ingredient2, ingredient3, ingredient4,
                               ingredient5, ingredient6, ingredient7, receipe, navigation
@@ -10,22 +22,22 @@ const OneCocktailMaker = ({
 
 
     <View style={styles.container}>
-
-        <Text style={styles.mainTitle}>Details of {name}</Text>
-        <Text style={styles.title}>Touch any ingredient for more details</Text>
-
+        <View style={styles.upContainer}>
+            <Text style={styles.title}>Details of:</Text><Text style={styles.mainTitle}>{name}</Text>
+            <Text style={styles.title}>Touch ingredient for details</Text>
+        </View>
         <View style={styles.optionsLine}>
             <Pressable onPress={() =>
 
                 navigation.goBack()}>
-                <Image style={styles.navPic} source={require('../assets/images/go-previous.png')}></Image></Pressable>
+                <Foundation style={styles.navPic} name="rewind" color='black' size={iconSize}/></Pressable>
 
             <Pressable onPress={() =>
 
                 navigation.navigate("Fav", {id: id})}>
 
 
-                <Image style={styles.navPic} source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
         </View>
 
         <Image style={styles.pic}
@@ -117,28 +129,31 @@ export function DetailsScreen({navigation}) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
 
-                <FlatList
+                    <FlatList
 
-                    data={OneCocktail}
-                    renderItem={({item}) =>
-                        <OneCocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
-                                          navigation={navigation}
-                                          receipe={item.strInstructions}
-                                          ingredient1={item.strIngredient1 === null ? '' : item.strIngredient1}
-                                          ingredient2={item.strIngredient2 === null ? '' : item.strIngredient2}
-                                          ingredient3={item.strIngredient3 === null ? null : item.strIngredient3}
-                                          ingredient4={item.strIngredient4 === null ? null : item.strIngredient4}
-                                          ingredient5={item.strIngredient5 === null ? null : item.strIngredient5}
-                                          ingredient6={item.strIngredient6 === null ? null : item.strIngredient6}
-                                          ingredient7={item.strIngredient7 === null ? null : item.strIngredient7}
-                        />
-                    }
-                    keyExtractor={item => item.idDrink}
-                />
-            </View>
+                        data={OneCocktail}
+                        renderItem={({item}) =>
+                            <OneCocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
+                                              navigation={navigation}
+                                              receipe={item.strInstructions}
+                                              ingredient1={item.strIngredient1 === null ? '' : item.strIngredient1}
+                                              ingredient2={item.strIngredient2 === null ? '' : item.strIngredient2}
+                                              ingredient3={item.strIngredient3 === null ? null : item.strIngredient3}
+                                              ingredient4={item.strIngredient4 === null ? null : item.strIngredient4}
+                                              ingredient5={item.strIngredient5 === null ? null : item.strIngredient5}
+                                              ingredient6={item.strIngredient6 === null ? null : item.strIngredient6}
+                                              ingredient7={item.strIngredient7 === null ? null : item.strIngredient7}
+                            />
+                        }
+                        keyExtractor={item => item.idDrink}
+                    />
+                </View>
+            </ImageBackground>
         </SafeAreaView>)
 }
 
@@ -146,19 +161,26 @@ export function DetailsScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'cadetblue',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.7)',
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column',
-        marginTop: 40,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        borderRadius: 20,
+        // flexDirection: 'column',
+        // marginTop: 40,
+        // marginVertical: 5,
+        // marginHorizontal: 5,
+        // borderRadius: 20,
+    },
+    bgImage: {
+        flex: 1,
+        justifyContent: 'center',
+
+
     },
     mainTitle: {
         fontWeight: 'bold',
         color: 'antiquewhite',
-        fontSize: 25,
+        fontSize: 30,
         marginTop: 25,
         marginBottom: 3
     },
@@ -168,10 +190,23 @@ const styles = StyleSheet.create({
         color: 'antiquewhite',
         paddingBottom: 10
     },
+    upContainer: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.5)',
+        // height: 280,
+        width: '100%',
+        padding: 5,
+        marginHorizontal: 15,
+        marginTop: 25,
+    },
+
 
     pic: {
-        height: 250,
-        width: 250,
+        height: 320,
+        width: 320,
         borderRadius: 20,
         padding: 5,
 
@@ -187,10 +222,14 @@ const styles = StyleSheet.create({
 
     navPic: {
         marginHorizontal: 50,
-        height: 25,
-        width: 25,
-        marginVertical: 25
+        marginVertical: 10
 
     },
+    plainText: {
+
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+
+    }
 
 })

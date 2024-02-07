@@ -5,7 +5,7 @@ import HomeScreen from "./Screens/HomeScreen";
 import {DetailsScreen} from "./Screens/DetailsScreen";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TenRandomScreen from "./Screens/TenRandomScreen";
-import {SearchForm} from "./Methods/SearchForm"
+import {SearchForm} from "./Components/SearchForm"
 import Foundation from "react-native-vector-icons/Foundation"
 import {IngredientSearchScreen} from "./Screens/IngredientSearchScreen";
 import {NameSearchScreen} from "./Screens/NameSearchScreen"

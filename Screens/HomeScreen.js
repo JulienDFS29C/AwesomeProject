@@ -1,9 +1,11 @@
 //import * as React from 'react';
 import {useEffect, useState} from "react";
-import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {FadeInView} from '../effects/FadeinView'
+import Foundation from "react-native-vector-icons/Foundation";
 
-
+const iconSize = 28;
+const image = '../assets/images/CocktailBG.jpg'
 const CocktailMaker = ({name, pic, id, navigation}) => (
 
 
@@ -21,13 +23,14 @@ const CocktailMaker = ({name, pic, id, navigation}) => (
 
             </Pressable>
             <View style={styles.optionsLine}>
-                <Text>{name}</Text>
+                <Text style={styles.plainText}>{name}</Text>
                 <Pressable onPress={() =>
 
                     navigation.navigate("Fav", {id: id})}>
 
 
-                    <Image style={styles.navPic} source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                    <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
+
             </View>
         </FadeInView>
     </View>
@@ -81,26 +84,28 @@ export default function HomeScreen({navigation}) {
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={styles.upContainer}>
+                        <Image style={styles.titlePic} source={require('../assets/images/glass2.jpg')}></Image>
+                        <Text style={styles.mainTitle}> DRINK MAKER</Text>
+                        <Text style={styles.title}>Touch any picture for details</Text>
+                    </View>
 
-                <Text style={styles.mainTitle}>THE INFINITE BAR</Text>
+                    <FlatList onEndReached={getCockAPI}
+                              onEndReachedThreshold={0.5}
 
-                <Image style={styles.titlePic} source={require('../assets/images/glass.jpg')}></Image>
-                <Text style={styles.title}>Touch any picture for details</Text>
+                              data={Cocktails}
+                              renderItem={({item}) =>
+                                  <CocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
+                                                 navigation={navigation}/>
+                              }
+                              keyExtractor={item => item.idDrink}
+                    />
 
+                </View>
+            </ImageBackground>
 
-                <FlatList onEndReached={getCockAPI}
-                          onEndReachedThreshold={0.5}
-
-                          data={Cocktails}
-                          renderItem={({item}) =>
-                              <CocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
-                                             navigation={navigation}/>
-                          }
-                          keyExtractor={item => item.idDrink}
-                />
-
-            </View>
         </SafeAreaView>)
 }
 
@@ -108,19 +113,38 @@ export default function HomeScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'cadetblue',
-        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.7)',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexDirection: 'column',
+        // marginTop: 40,
+        // marginVertical: 5,
+        // marginHorizontal: 5,
+        // borderRadius: 20,
+    },
+    bgImage: {
+        flex: 1,
         justifyContent: 'center',
+
+
+    },
+    upContainer: {
         flexDirection: 'column',
-        marginTop: 40,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.5)',
+        // height: 280,
+        width: 280,
+        padding: 5,
+        marginHorizontal: 15
+
     },
     mainTitle: {
         fontWeight: 'bold',
         color: 'antiquewhite',
-        fontSize: 25,
+        fontSize: 30,
         marginTop: 25,
         marginBottom: 3
     },
@@ -135,7 +159,8 @@ const styles = StyleSheet.create({
         width: 70,
         borderRadius: 50,
         padding: 15,
-        marginVertical: 25
+        marginTop: 30,
+        marginBottom: -80
 
     },
     pic: {
@@ -143,6 +168,8 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 20,
         padding: 5,
+        marginHorizontal: 15,
+
 
     },
     navPic: {
@@ -156,5 +183,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginBottom: 15
+
+    },
+    plainText: {
+
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        marginHorizontal: 5
+
     }
 })

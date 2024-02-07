@@ -1,9 +1,12 @@
-import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from '@react-navigation/native';
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {FadeInView} from '../effects/FadeinView'
+import Foundation from "react-native-vector-icons/Foundation";
 
+const image = '../assets/images/CocktailBG.jpg'
+
+const iconSize = 28;
 
 const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
 
@@ -21,20 +24,17 @@ const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
 
             </Pressable>
             <View style={styles.optionsLine}>
-                <Text>{name}</Text>
+                <Text style={styles.plainText}>{name}</Text>
                 <Pressable onPress={() =>
 
                     navigation.navigate("Fav", {id: id})}>
 
-
-                    <Image style={styles.navPic} source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                    <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
             </View>
 
         </FadeInView>
     </View>
 )
-
-const AlphaStack = createNativeStackNavigator();
 
 
 export default function TenRandomScreen({navigation}) {
@@ -87,24 +87,25 @@ export default function TenRandomScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-
-                <Text style={styles.mainTitle}> 10 RANDOM COCKTAILS</Text>
-                <Text style={styles.title}>Touch any picture for details</Text>
-
-                <FlatList
-                    data={TenRandomCocktails}
-                    renderItem={({item}) =>
-                        <AlphaCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
-                                            id={item.idDrink} navigation={navigation}/>
-                    }
-                    keyExtractor={item => item.idDrink}
-                />
-
-
-            </View>
+            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={styles.upContainer}>
+                        <Text style={styles.mainTitle}> 10 RANDOM COCKTAILS</Text>
+                        <Text style={styles.title}>Touch any picture for details</Text>
+                    </View>
+                    <FlatList
+                        data={TenRandomCocktails}
+                        renderItem={({item}) =>
+                            <AlphaCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
+                                                id={item.idDrink} navigation={navigation}/>
+                        }
+                        keyExtractor={item => item.idDrink}
+                    />
 
 
+                </View>
+
+            </ImageBackground>
         </SafeAreaView>
 
     )
@@ -112,43 +113,64 @@ export default function TenRandomScreen({navigation}) {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'cadetblue',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        marginTop: 40,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        borderRadius: 20,
-    },
-    mainTitle: {
-        fontWeight: 'bold',
-        color: 'antiquewhite',
-        fontSize: 25,
-        marginTop: 25,
-        marginBottom: 3
-    },
+        container: {
+            flex: 1,
+            opacity: 50,
+            backgroundColor: 'rgba(95, 158, 160, 0.7)',
+            // alignItems: 'center',
+            // justifyContent: 'center',
+            // flexDirection: 'column',
+            // marginTop: 40,
+            // marginVertical: 5,
+            // marginHorizontal: 5,
+            // borderRadius: 20,
+        },
+        bgImage: {
+            flex: 1,
+            justifyContent: 'center',
 
-    title: {
-        fontSize: 20,
-        color: 'antiquewhite',
-        paddingBottom: 10
-    },
+
+        },
+        upContainer: {
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: 50,
+            backgroundColor: 'rgba(95, 158, 160, 0.5)',
+            // height: 280,
+            width: 280,
+            padding: 5,
+            marginHorizontal: 15
+
+        },
+        mainTitle: {
+            fontWeight: 'bold',
+            color: 'antiquewhite',
+            fontSize: 30,
+            marginTop: 25,
+            marginBottom: 3
+        },
+
+        title: {
+            fontSize: 20,
+            color: 'antiquewhite',
+            paddingBottom: 10
+        },
 
         pic: {
             height: 250,
             width: 250,
             borderRadius: 20,
             padding: 5,
-
+            marginHorizontal: 15,
         },
 
         optionsLine: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginBottom: 15
+
         },
         navPic: {
 
@@ -156,7 +178,13 @@ const styles = StyleSheet.create({
             height: 25,
             width: 25,
         },
+        plainText: {
 
+            fontWeight: 'bold',
+            fontStyle: 'italic',
+            marginHorizontal: 5,
+
+        },
     }
 )
 

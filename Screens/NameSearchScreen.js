@@ -1,7 +1,11 @@
-import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {FadeInView} from "../effects/FadeinView";
 import {useRoute} from "@react-navigation/native";
+import Foundation from "react-native-vector-icons/Foundation";
+
+const iconSize = 28;
+const image = '../assets/images/CocktailBG.jpg'
 
 export function NameSearchScreen({navigation}) {
 
@@ -27,14 +31,14 @@ export function NameSearchScreen({navigation}) {
 
                 </Pressable>
                 <View style={styles.optionsLine}>
-                    <Text>{name}</Text>
+                    <Text style={styles.plainText}>{name}</Text>
                     <Pressable onPress={() =>
 
                         navigation.navigate("Fav", {id: id})}>
 
 
-                        <Image style={styles.navPic}
-                               source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                        <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
+
                 </View>
             </FadeInView>
         </View>
@@ -70,35 +74,39 @@ export function NameSearchScreen({navigation}) {
     }
 
 
-
     return (
 
         <SafeAreaView style={styles.container}>
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ImageBackground source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={styles.upContainer}>
+                            <Text style={styles.mainTitle}>Result for {name} :</Text>
+                            <Text style={styles.title}>(Touch any picture for details)</Text>
+                        </View>
 
 
+                        <Pressable onPress={() =>
 
-                <Pressable onPress={() =>
+                            navigation.goBack()}>
+                            <Image style={styles.backPic}
+                                   source={require('../assets/images/go-previous.png')}></Image></Pressable>
 
-                    navigation.goBack()}>
-                    <Image style={styles.backPic}
-                           source={require('../assets/images/go-previous.png')}></Image></Pressable>
-
-                <FlatList
-                    data={CockailByName}
-                    renderItem={({item}) => (
-                        <CocktailMakerByName
-                            name={item.strDrink}
-                            pic={item.strDrinkThumb}
-                            id={item.idDrink}
-                            navigation={navigation}
+                        <FlatList
+                            data={CockailByName}
+                            renderItem={({item}) => (
+                                <CocktailMakerByName
+                                    name={item.strDrink}
+                                    pic={item.strDrinkThumb}
+                                    id={item.idDrink}
+                                    navigation={navigation}
+                                />
+                            )}
+                            keyExtractor={item => item.idDrink}
                         />
-                    )}
-                    keyExtractor={item => item.idDrink}
-                />
 
-            </View>
-
+                    </View></View>
+            </ImageBackground>
         </SafeAreaView>)
 
 
@@ -107,19 +115,45 @@ export function NameSearchScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'cadetblue',
-        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.7)',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // flexDirection: 'column',
+        // marginTop: 40,
+        // marginVertical: 5,
+        // marginHorizontal: 5,
+        // borderRadius: 20,
+    },
+    bgImage: {
+        flex: 1,
         justifyContent: 'center',
+
+
+    },
+    upContainer: {
         flexDirection: 'column',
-        marginTop: 40,
-        marginVertical: 5,
-        marginHorizontal: 5,
-        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 50,
+        backgroundColor: 'rgba(95, 158, 160, 0.5)',
+        // height: 280,
+        width: 280,
+        padding: 5,
+        marginHorizontal: 15
+
+    },
+    mainTitle: {
+        fontWeight: 'bold',
+        color: 'antiquewhite',
+        fontSize: 30,
+        marginTop: 25,
+        marginBottom: 3
     },
 
     title: {
         fontSize: 20,
-        color: 'black',
+        color: 'antiquewhite',
         paddingBottom: 10
     },
 
@@ -128,17 +162,20 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 20,
         padding: 5,
+        marginHorizontal: 15,
+
 
     },
-    backPic :{
+    backPic: {
 
         height: 25,
         width: 25,
-        marginTop : 15,
-        marginRight : 300,    },
+        marginTop: 15,
+        marginRight: 300,
+    },
 
 
-        navPic: {
+    navPic: {
 
         alignSelf: 'flex-end',
         height: 25,
@@ -148,6 +185,15 @@ const styles = StyleSheet.create({
     optionsLine: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+        marginBottom: 15
+
+    },
+    plainText: {
+
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        marginHorizontal: 5
+
+    },
 })
