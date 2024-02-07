@@ -88,7 +88,7 @@ export default function HomeScreen({navigation}) {
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <View style={styles.upContainer}>
                         <Image style={styles.titlePic} source={require('../assets/images/glass2.jpg')}></Image>
-                        <Text style={styles.mainTitle}> DRINK MAKER</Text>
+                        <Text style={styles.mainTitle}>  DRINK  MAKER</Text>
                         <Text style={styles.title}>Touch any picture for details</Text>
                     </View>
 
