@@ -46,6 +46,7 @@ export function FavoritesScreen({navigation}) {
 
 
     useEffect(() => {
+
         if (id) {
             console.log("useEffect update avec ID: ", id);
             getFav();
@@ -71,14 +72,20 @@ export function FavoritesScreen({navigation}) {
 
                 let json = await response.json();
                 console.log("IDIND = " + json)
+                const newFavorite = json.drinks[0];
 
-                setFavorites(favorites => [...favorites, ...json.drinks]);
 
-            }).catch(e => {
-            console.log('erreur : ', e);
-
-        })
-
+                setFavorites(favorites => {
+                    if (favorites.some(favorite => favorite.idDrink === newFavorite.idDrink)) {
+                        return favorites;
+                    } else {
+                        return [...favorites, newFavorite];
+                    }
+                })
+            })
+            .catch(e => {
+                console.log('erreur : ', e);
+            })
 
     }
 
@@ -99,10 +106,10 @@ export function FavoritesScreen({navigation}) {
                 {favorites.length <= 0 ? renderDefaultContent() : (
                     <FlatList
 
-                              data={favorites}
-                              renderItem={({item}) => <FavCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
-                                                                        id={item.idDrink} navigation={navigation}/>}
-                              keyExtractor={item => item.idDrink}
+                        data={favorites}
+                        renderItem={({item}) => <FavCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
+                                                                  id={item.idDrink} navigation={navigation}/>}
+                        keyExtractor={item => item.idDrink}
                     />
                 )}
             </View>
@@ -142,8 +149,8 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 20,
         padding: 5,
-        marginTop : 15,
-        marginBottom : 3,
+        marginTop: 15,
+        marginBottom: 3,
 
     },
 
@@ -154,10 +161,10 @@ const styles = StyleSheet.create({
 
     },
     defaultText: {
-        backgroundColor :'antiquewhite',
-        borderRadius : 10,
+        backgroundColor: 'antiquewhite',
+        borderRadius: 10,
         fontSize: 18,
-        padding : 5,
+        padding: 5,
         color: 'grey',
     },
     optionsLine: {
