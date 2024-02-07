@@ -17,12 +17,14 @@ export function IngredientLookupScreen({navigation}) {
             <FadeInView>
                 <Pressable onPress={() =>
 
-                    navigation.goBack()}><Text>Retour</Text></Pressable>
+                    navigation.goBack()}>
+                    <Image style={styles.navPic}
+                           source={require('../assets/images/go-previous.png')}></Image></Pressable>
                 <Image style={styles.pic}
                        source={{uri: `https://www.thecocktaildb.com/images/ingredients/${ingredient}-Medium.png`}}
                 />
-                <Text>{name}</Text>
-                <Text>{desc}</Text>
+                <Text style={styles.mainTitle}>{name}</Text>
+                <Text style={styles.desc}>{desc}</Text>
 
 
             </FadeInView>
@@ -68,10 +70,23 @@ export function IngredientLookupScreen({navigation}) {
     }
 
 
+    const renderDefaultContent = () => {
+        return (
+            <View style={styles.defaultContainer}>
+                <Text style={styles.defaultText}>Aucun favori pour le moment</Text>
+            </View>
+        );
+    };
+
+
+
     return (
+
+
+
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-
+                {LookupIngredient.length <= 0 ? renderDefaultContent() : (
 
                 <FlatList
                     data={LookupIngredient}
@@ -82,7 +97,7 @@ export function IngredientLookupScreen({navigation}) {
                     keyExtractor={item => item.idIngredient}
                 />
 
-
+                )}
             </View>
 
 
@@ -95,20 +110,28 @@ export function IngredientLookupScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.7)',
+        backgroundColor: 'cadetblue',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
         marginTop: 40,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        marginVertical: 5,
+        marginHorizontal: 5,
         borderRadius: 20,
     },
+    mainTitle: {
+        fontWeight: 'bold',
+        color: 'antiquewhite',
+        fontSize: 25,
+        marginTop: 25,
+        marginBottom: 3
+    },
 
-    title: {
-        fontSize: 20,
-        color: 'black',
-        paddingBottom: 10
+    desc: {
+        fontSize: 16,
+        color: 'antiquewhite',
+        paddingBottom: 10,
+
     },
 
     pic: {
@@ -116,8 +139,16 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 20,
         padding: 5,
+        alignSelf : "center"
 
-    }
+    },
+    navPic: {
+
+        alignSelf: 'flex-start',
+        height: 25,
+        width: 25,
+        margin : 12
+    },
 })
 
 

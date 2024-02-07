@@ -26,7 +26,16 @@ export function NameSearchScreen({navigation}) {
                     />
 
                 </Pressable>
-                <Text>{name}</Text>
+                <View style={styles.optionsLine}>
+                    <Text>{name}</Text>
+                    <Pressable onPress={() =>
+
+                        navigation.navigate("Fav", {id: id})}>
+
+
+                        <Image style={styles.navPic}
+                               source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                </View>
             </FadeInView>
         </View>
     )
@@ -60,14 +69,20 @@ export function NameSearchScreen({navigation}) {
 
     }
 
+
+
     return (
 
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
+
+
                 <Pressable onPress={() =>
 
-                    navigation.goBack()}><Text>Retour</Text></Pressable>
+                    navigation.goBack()}>
+                    <Image style={styles.backPic}
+                           source={require('../assets/images/go-previous.png')}></Image></Pressable>
 
                 <FlatList
                     data={CockailByName}
@@ -81,7 +96,9 @@ export function NameSearchScreen({navigation}) {
                     )}
                     keyExtractor={item => item.idDrink}
                 />
+
             </View>
+
         </SafeAreaView>)
 
 
@@ -90,7 +107,7 @@ export function NameSearchScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'mistyrose',
+        backgroundColor: 'cadetblue',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
@@ -113,4 +130,24 @@ const styles = StyleSheet.create({
         padding: 5,
 
     },
+    backPic :{
+
+        height: 25,
+        width: 25,
+        marginTop : 15,
+        marginRight : 300,    },
+
+
+        navPic: {
+
+        alignSelf: 'flex-end',
+        height: 25,
+        width: 25,
+    },
+
+    optionsLine: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    }
 })

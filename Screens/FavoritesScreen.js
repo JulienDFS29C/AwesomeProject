@@ -1,4 +1,4 @@
-import {FlatList, Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 import {FadeInView} from "../effects/FadeinView";
@@ -21,12 +21,8 @@ export function FavoritesScreen({navigation}) {
     const FavCocktailMaker = ({name, pic, id}) => (
 
 
-        <View style={styles.container}>
+        <View>
             <FadeInView>
-                <Pressable onPress={() =>
-                    removeFav(id)
-                }>remove from Favs</Pressable>
-
                 <Pressable onPress={() =>
 
                     navigation.navigate('Details', {id: id})}>
@@ -36,8 +32,14 @@ export function FavoritesScreen({navigation}) {
                     />
 
                 </Pressable>
-
-                <Text>{name}</Text>
+                <View style={styles.optionsLine}>
+                    <Text>{name}</Text>
+                    <Pressable onPress={() =>
+                        removeFav(id)
+                    }>
+                        <Image style={styles.navPic}
+                               source={require('../assets/images/trash.png')}></Image></Pressable>
+                </View>
             </FadeInView>
         </View>
     )
@@ -67,11 +69,10 @@ export function FavoritesScreen({navigation}) {
                     throw new Error('pas de données cocktail trouvées');
                 }
 
-                const json = await response.json();
+                let json = await response.json();
                 console.log("IDIND = " + json)
 
                 setFavorites(favorites => [...favorites, ...json.drinks]);
-
 
             }).catch(e => {
             console.log('erreur : ', e);
@@ -90,23 +91,30 @@ export function FavoritesScreen({navigation}) {
     };
 
     return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            {favorites.length <= 0 ? renderDefaultContent() : (
-                <FlatList
-                    data={favorites}
-                    renderItem={({item}) => <FavCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
-                                                              id={item.idDrink} navigation={navigation}/>}
-                    keyExtractor={item => item.idDrink}
-                />
-            )}
-        </View>
+        <SafeAreaView style={styles.container}>
+
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.mainTitle}> YOUR FAVORITES</Text>
+                <Text style={styles.title}>Touch any picture for details</Text>
+                {favorites.length <= 0 ? renderDefaultContent() : (
+                    <FlatList
+
+                              data={favorites}
+                              renderItem={({item}) => <FavCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
+                                                                        id={item.idDrink} navigation={navigation}/>}
+                              keyExtractor={item => item.idDrink}
+                    />
+                )}
+            </View>
+        </SafeAreaView>
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'mistyrose',
+        backgroundColor: 'cadetblue',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
@@ -115,10 +123,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         borderRadius: 20,
     },
+    mainTitle: {
+        fontWeight: 'bold',
+        color: 'antiquewhite',
+        fontSize: 25,
+        marginTop: 25,
+        marginBottom: 3
+    },
 
     title: {
         fontSize: 20,
-        color: 'black',
+        color: 'antiquewhite',
         paddingBottom: 10
     },
 
@@ -127,6 +142,8 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 20,
         padding: 5,
+        marginTop : 15,
+        marginBottom : 3,
 
     },
 
@@ -134,9 +151,24 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+
     },
     defaultText: {
+        backgroundColor :'antiquewhite',
+        borderRadius : 10,
         fontSize: 18,
+        padding : 5,
         color: 'grey',
-    }
+    },
+    optionsLine: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    navPic: {
+
+        alignSelf: 'flex-end',
+        height: 25,
+        width: 25,
+    },
 })

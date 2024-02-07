@@ -10,6 +10,7 @@ const CocktailMaker = ({name, pic, id, navigation}) => (
     <View style={styles.container}>
         <FadeInView>
 
+
             <Pressable onPress={() =>
 
                 navigation.navigate('Details', {id: id})}>
@@ -19,8 +20,15 @@ const CocktailMaker = ({name, pic, id, navigation}) => (
                 />
 
             </Pressable>
-            <Text>{name}</Text>
+            <View style={styles.optionsLine}>
+                <Text>{name}</Text>
+                <Pressable onPress={() =>
 
+                    navigation.navigate("Fav", {id: id})}>
+
+
+                    <Image style={styles.navPic} source={require('../assets/images/FavStar.png')}></Image></Pressable>
+            </View>
         </FadeInView>
     </View>
 )
@@ -75,16 +83,21 @@ export default function HomeScreen({navigation}) {
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
-                <Text>APPLI MOCHE MAIS FONCTIONNELLE</Text>
+                <Text style={styles.mainTitle}>THE INFINITE BAR</Text>
 
-                <FlatList
+                <Image style={styles.titlePic} source={require('../assets/images/glass.jpg')}></Image>
+                <Text style={styles.title}>Touch any picture for details</Text>
 
-                    data={Cocktails}
-                    renderItem={({item}) =>
-                        <CocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
-                                       navigation={navigation}/>
-                    }
-                    keyExtractor={item => item.idDrink}
+
+                <FlatList onEndReached={getCockAPI}
+                          onEndReachedThreshold={0.5}
+
+                          data={Cocktails}
+                          renderItem={({item}) =>
+                              <CocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
+                                             navigation={navigation}/>
+                          }
+                          keyExtractor={item => item.idDrink}
                 />
 
             </View>
@@ -95,7 +108,7 @@ export default function HomeScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'mistyrose',
+        backgroundColor: 'cadetblue',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
@@ -104,13 +117,27 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         borderRadius: 20,
     },
+    mainTitle: {
+        fontWeight: 'bold',
+        color: 'antiquewhite',
+        fontSize: 25,
+        marginTop: 25,
+        marginBottom: 3
+    },
 
     title: {
         fontSize: 20,
-        color: 'black',
+        color: 'antiquewhite',
         paddingBottom: 10
     },
+    titlePic: {
+        height: 70,
+        width: 70,
+        borderRadius: 50,
+        padding: 15,
+        marginVertical: 25
 
+    },
     pic: {
         height: 250,
         width: 250,
@@ -118,4 +145,16 @@ const styles = StyleSheet.create({
         padding: 5,
 
     },
+    navPic: {
+
+        alignSelf: 'flex-end',
+        height: 25,
+        width: 25,
+    },
+
+    optionsLine: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    }
 })

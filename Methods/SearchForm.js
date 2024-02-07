@@ -1,66 +1,74 @@
-import {Pressable, StyleSheet, Text, TextInput, View} from "react-native";
+import {Button, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
 import {useState} from "react";
+import {SafeAreaConsumer} from "react-native-safe-area-context";
 
 export const SearchForm = ({navigation}) => {
 
     const [ingredient, setIngredient] = useState('')
     const [name, setName] = useState('')
     const [ingredientFO, setIngredientFO] = useState('')
-
+    const buttonTitle = "GO"
 
     return (
 
-        /*
-                ***********************BY INGREDIENT**********************
-        */
-
-
+<SafeAreaView style={styles.container}>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+
+            {/*
+            ***********************BY INGREDIENT**********************
+            */}
+
+            <Text style={styles.header}>SEARCH BY INGREDIENT</Text>
+
             <TextInput editable
                        maxLength={40}
                        onChangeText={setIngredient}
                        value={ingredient}
                        style={styles.input}
-                       placeholder={'enter an ingredient'}
+                       placeholder={'type your ingredient (gin, coca...)'}
             />
 
-            <Pressable
+            <Button
+                title={buttonTitle}
                 style={styles.button}
                 onPress={() => {
 
                     navigation.navigate('IngredientSearch', {ingredient: ingredient})
                 }}
             >
-                <Text>GO</Text>
-            </Pressable>
+            </Button>
 
             {/*
          **************************BY NAME*************************
-*/}
+          */}
+            <Text style={styles.header}>SEARCH BY NAME</Text>
 
-            <TextInput editable
-                       maxLength={40}
-                       onChangeText={setName}
-                       value={name}
-                       style={styles.input}
-                       placeholder={'enter a full name or just a part'}
+            <TextInput
+                editable
+                maxLength={40}
+                onChangeText={setName}
+                value={name}
+                style={styles.input}
+                placeholder={'at least one letter'}
             />
 
-            <Pressable
+            <Button
                 style={styles.button}
+                title={buttonTitle}
                 onPress={() => {
 
                     navigation.navigate('NameSearch', {name: name})
                 }}
             >
-                <Text>GO</Text>
-            </Pressable>
+
+            </Button>
 
 
             {/*
         *****************INGREDIENT LOOKUP *********************
 */}
 
+            <Text style={styles.header}>LOOK FOR AN INGREDIENT</Text>
 
             <TextInput editable
                        maxLength={40}
@@ -70,20 +78,21 @@ export const SearchForm = ({navigation}) => {
                        placeholder={'find an ingredient'}
             />
 
-            <Pressable
+            <Button
                 style={styles.button}
+                title={buttonTitle}
                 onPress={() => {
 
                     navigation.navigate('IngredientLookUp', {ingredient: ingredientFO})
                 }}
             >
-                <Text>GO</Text>
-            </Pressable>
+
+            </Button>
 
 
         </View>
 
-
+</SafeAreaView>
     );
 
 
@@ -91,21 +100,24 @@ export const SearchForm = ({navigation}) => {
 const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: 'rgba(255,255,255,0.7)',
+            backgroundColor: 'cadetblue',
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
             marginTop: 40,
-            marginVertical: 8,
-            marginHorizontal: 16,
+            marginVertical: 5,
+            marginHorizontal: 5,
             borderRadius: 20,
         },
-
-        title: {
-            fontSize: 20,
-            color: 'black',
-            paddingBottom: 10
+        mainTitle: {
+            fontWeight: 'bold',
+            color: 'antiquewhite',
+            fontSize: 25,
+            marginTop: 25,
+            marginBottom: 3
         },
+
+
 
         pic: {
             height: 250,
@@ -115,16 +127,23 @@ const styles = StyleSheet.create({
 
         },
         input: {
-            height: 40, // Hauteur explicite
+            height: 40,
             margin: 12,
             borderWidth: 1,
             padding: 10,
-            borderColor: 'gray', // Couleur de la bordure visible
+            borderColor: 'gray',
             borderRadius: 5,
-            backgroundColor: 'white', // Fond clair
-            color: 'black', // Texte foncé
-            width: '80%', // Largeur définie
+            backgroundColor: 'white',
+            color: 'black',
+            width: '40%',
         },
 
+        header: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: 'antiquewhite',
+            marginTop: 80
+
+        }
     }
 )

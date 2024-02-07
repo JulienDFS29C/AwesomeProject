@@ -26,7 +26,16 @@ export function IngredientSearchScreen({navigation}) {
                     />
 
                 </Pressable>
-                <Text>{name}</Text>
+                <View style={styles.optionsLine}>
+                    <Text>{name}</Text>
+                    <Pressable onPress={() =>
+
+                        navigation.navigate("Fav", {id: id})}>
+
+
+                        <Image style={styles.navPic}
+                               source={require('../assets/images/FavStar.png')}></Image></Pressable>
+                </View>
             </FadeInView>
         </View>
     )
@@ -59,6 +68,14 @@ export function IngredientSearchScreen({navigation}) {
         })
 
     }
+    const renderDefaultContent = () => {
+        return (
+            <View style={styles.defaultContainer}>
+                <Text style={styles.defaultText}>No Result</Text>
+            </View>
+        );
+    };
+
 
     return (
 
@@ -66,8 +83,10 @@ export function IngredientSearchScreen({navigation}) {
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <Pressable onPress={() =>
 
-                    navigation.goBack()}><Text>Retour</Text></Pressable>
-
+                    navigation.goBack()}>
+                    <Image style={styles.navPic}
+                           source={require('../assets/images/go-previous.png')}></Image></Pressable>
+                {CockailsByIngredient.length <= 0 ? renderDefaultContent() : (
                 <FlatList
                     data={CockailsByIngredient}
                     renderItem={({item}) => (
@@ -79,7 +98,7 @@ export function IngredientSearchScreen({navigation}) {
                         />
                     )}
                     keyExtractor={item => item.idDrink}
-                />
+                />)}
             </View>
         </SafeAreaView>)
 
@@ -89,7 +108,7 @@ export function IngredientSearchScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'mistyrose',
+        backgroundColor: 'cadetblue',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
@@ -98,18 +117,49 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         borderRadius: 20,
     },
+    mainTitle: {
+        fontWeight: 'bold',
+        color: 'antiquewhite',
+        fontSize: 25,
+        marginTop: 25,
+        marginBottom: 3
+    },
 
     title: {
         fontSize: 20,
-        color: 'black',
+        color: 'antiquewhite',
         paddingBottom: 10
     },
-
     pic: {
         height: 250,
         width: 250,
         borderRadius: 20,
         padding: 5,
 
+    },
+    navPic: {
+
+        alignSelf: 'flex-end',
+        height: 25,
+        width: 25,
+    },
+
+    optionsLine: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    defaultContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    defaultText: {
+        backgroundColor :'antiquewhite',
+        borderRadius : 10,
+        fontSize: 18,
+        padding : 5,
+        color: 'grey',
     },
 })

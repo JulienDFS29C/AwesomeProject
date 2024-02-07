@@ -10,7 +10,6 @@ const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
 
     <View style={styles.container}>
 
-
         <FadeInView>
             <Pressable onPress={() =>
 
@@ -21,8 +20,15 @@ const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
                 />
 
             </Pressable>
+            <View style={styles.optionsLine}>
+                <Text>{name}</Text>
+                <Pressable onPress={() =>
 
-            <Text>{name}</Text>
+                    navigation.navigate("Fav", {id: id})}>
+
+
+                    <Image style={styles.navPic} source={require('../assets/images/FavStar.png')}></Image></Pressable>
+            </View>
 
         </FadeInView>
     </View>
@@ -79,13 +85,12 @@ export default function TenRandomScreen({navigation}) {
 
     }
 
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Pressable onPress={() =>
 
-                    navigation.goBack()}><Text>Retour</Text></Pressable>
+                <Text style={styles.mainTitle}> 10 RANDOM COCKTAILS</Text>
+                <Text style={styles.title}>Touch any picture for details</Text>
 
                 <FlatList
                     data={TenRandomCocktails}
@@ -107,23 +112,30 @@ export default function TenRandomScreen({navigation}) {
 
 
 const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: 'rgba(255,255,255,0.7)',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            marginTop: 40,
-            marginVertical: 8,
-            marginHorizontal: 16,
-            borderRadius: 20,
-        },
+    container: {
+        flex: 1,
+        backgroundColor: 'cadetblue',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        marginTop: 40,
+        marginVertical: 5,
+        marginHorizontal: 5,
+        borderRadius: 20,
+    },
+    mainTitle: {
+        fontWeight: 'bold',
+        color: 'antiquewhite',
+        fontSize: 25,
+        marginTop: 25,
+        marginBottom: 3
+    },
 
-        title: {
-            fontSize: 20,
-            color: 'black',
-            paddingBottom: 10
-        },
+    title: {
+        fontSize: 20,
+        color: 'antiquewhite',
+        paddingBottom: 10
+    },
 
         pic: {
             height: 250,
@@ -131,7 +143,20 @@ const styles = StyleSheet.create({
             borderRadius: 20,
             padding: 5,
 
-        }
+        },
+
+        optionsLine: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+        },
+        navPic: {
+
+            alignSelf: 'flex-end',
+            height: 25,
+            width: 25,
+        },
+
     }
 )
 
