@@ -1,8 +1,8 @@
-import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import {FadeInView} from "../effects/FadeinView";
 import {useRoute} from "@react-navigation/native";
 import Foundation from "react-native-vector-icons/Foundation";
+import {CocktailMaker} from "../Components/CocktailMaker";
 
 const iconSize = 28;
 
@@ -10,47 +10,13 @@ export function IngredientSearchScreen({navigation}) {
 
     const route = useRoute();
     let {ingredient} = route.params;
-
-    let [CockailsByIngredient, setCockailsByIngredient] = useState([])
+    const [CockailsByIngredient, setCockailsByIngredient] = useState([])
     const image = '../assets/images/CocktailBG.jpg'
-
-
-    const CocktailMakerByIngredient = ({name, pic, navigation, id}) => (
-
-
-        <View style={styles.container}>
-
-            <FadeInView>
-
-                <Pressable onPress={() =>
-
-                    navigation.navigate('Details', {id: id})}>
-                    <Image style={styles.pic}
-                           source={{uri: pic}}
-
-                    />
-
-                </Pressable>
-                <View style={styles.optionsLine}>
-                    <Text style={styles.plainText}>{name}</Text>
-                    <Pressable onPress={() =>
-
-                        navigation.navigate("Fav", {id: id})}>
-
-
-                        <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
-
-                </View>
-            </FadeInView>
-        </View>
-    )
-
 
     useEffect(() => {
         console.log("useEffect update avec ingredient: ", ingredient);
         getByIngredient();
     }, [ingredient]);
-
 
     function getByIngredient() {
         console.log('By Ingredient');
@@ -69,9 +35,7 @@ export function IngredientSearchScreen({navigation}) {
 
             }).catch(e => {
             console.log('erreur : ', e);
-
         })
-
     }
 
     const renderDefaultContent = () => {
@@ -85,7 +49,6 @@ export function IngredientSearchScreen({navigation}) {
         );
     };
 
-
     return (
 
         <SafeAreaView style={styles.container}>
@@ -96,17 +59,17 @@ export function IngredientSearchScreen({navigation}) {
                     <View style={styles.upContainer}>
                         <Text style={styles.title}>Results for :</Text><Text
                         style={styles.mainTitle}>{ingredient}</Text>
-                        <Text style={styles.title}>Touch ingredient for details</Text>
+                        <Text style={styles.title}>Touch any picture for details</Text>
 
                         <Pressable onPress={() =>
-
                             navigation.goBack()}>
                             <Foundation style={styles.navPic} name="rewind" color='black' size={iconSize}/></Pressable></View>
                     {CockailsByIngredient.length <= 0 ? renderDefaultContent() : (
+
                         <FlatList
                             data={CockailsByIngredient}
                             renderItem={({item}) => (
-                                <CocktailMakerByIngredient
+                                <CocktailMaker
                                     name={item.strDrink}
                                     pic={item.strDrinkThumb}
                                     id={item.idDrink}
@@ -118,7 +81,6 @@ export function IngredientSearchScreen({navigation}) {
                 </View>
             </ImageBackground>
         </SafeAreaView>)
-
 
 }
 
@@ -138,7 +100,6 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         justifyContent: 'center',
-
 
     },
     upContainer: {
@@ -172,7 +133,6 @@ const styles = StyleSheet.create({
         padding: 5,
         marginHorizontal: 15,
 
-
     },
     navPic: {
 
@@ -192,7 +152,6 @@ const styles = StyleSheet.create({
         // flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-
 
     },
     defaultText: {

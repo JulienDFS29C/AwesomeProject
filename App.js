@@ -14,11 +14,9 @@ import {FavoritesScreen} from "./Screens/FavoritesScreen";
 
 const Stack = createNativeStackNavigator();
 
-
 /********************************************************************
  ********************************************************************/
 const Tab = createBottomTabNavigator();
-
 
 const BottomTabNavigator = () => {
     return (
@@ -54,9 +52,7 @@ const BottomTabNavigator = () => {
     );
 }
 
-
 export default function App() {
-
 
     console.log("in the APP")
 
@@ -74,7 +70,6 @@ export default function App() {
 
 
             </Stack.Navigator>
-
 
         }</NavigationContainer>
     );

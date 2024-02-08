@@ -1,70 +1,28 @@
-import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, View,} from "react-native";
 import {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from '@react-navigation/native';
-import {FadeInView} from '../effects/FadeinView'
-import Foundation from "react-native-vector-icons/Foundation";
+import {CocktailMaker} from "../Components/CocktailMaker";
 
 const image = '../assets/images/CocktailBG.jpg'
-
-const iconSize = 28;
-
-const AlphaCocktailMaker = ({name, pic, id, navigation}) => (
-
-
-    <View style={styles.container}>
-
-        <FadeInView>
-            <Pressable onPress={() =>
-
-                navigation.navigate('Details', {id: id})}>
-                <Image style={styles.pic}
-                       source={{uri: pic}}
-
-                />
-
-            </Pressable>
-            <View style={styles.optionsLine}>
-                <Text style={styles.plainText}>{name}</Text>
-                <Pressable onPress={() =>
-
-                    navigation.navigate("Fav", {id: id})}>
-
-                    <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
-            </View>
-
-        </FadeInView>
-    </View>
-)
 
 
 export default function TenRandomScreen({navigation}) {
 
-    let [TenRandomCocktails, setTenRandomCocktails] = useState([]);
+    const [TenRandomCocktails, setTenRandomCocktails] = useState([]);
 
     useFocusEffect(
         useCallback(() => {
             const refreshRandom = getRandomAPI();
-
             return () => refreshRandom;
         }, [navigation])
     );
 
-
-    console.log("in the Random")
-
-
     useEffect(() => {
         console.log("useeffect update")
         getRandomAPI();
-
     }, [useFocusEffect])
 
-
     function getRandomAPI() {
-
-
-        console.log('getRandomApi')
-
 
         fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/randomselection.php`)
 
@@ -72,21 +30,17 @@ export default function TenRandomScreen({navigation}) {
                 if (!response.ok) {
                     throw new Error('pas de données cocktail trouvées');
                 }
-
                 const json = await response.json();
-                console.log(json)
                 setTenRandomCocktails(json.drinks)
-
 
             }).catch(e => {
             console.log('erreur : ', e);
-
         })
-
     }
 
     return (
         <SafeAreaView style={styles.container}>
+
             <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <View style={styles.upContainer}>
@@ -95,22 +49,19 @@ export default function TenRandomScreen({navigation}) {
                     </View>
                     <FlatList
                         data={TenRandomCocktails}
-                        renderItem={({item}) =>
-                            <AlphaCocktailMaker name={item.strDrink} pic={item.strDrinkThumb}
-                                                id={item.idDrink} navigation={navigation}/>
+                        renderItem={({item}) =><CocktailMaker  pic={item.strDrinkThumb}
+                                                               name={item.strDrink}
+                                                               id={item.idDrink}
+                                                               navigation={navigation}/>
                         }
                         keyExtractor={item => item.idDrink}
                     />
 
-
                 </View>
-
             </ImageBackground>
         </SafeAreaView>
-
     )
 }
-
 
 const styles = StyleSheet.create({
         container: {
@@ -128,7 +79,6 @@ const styles = StyleSheet.create({
         bgImage: {
             flex: 1,
             justifyContent: 'center',
-
 
         },
         upContainer: {
@@ -173,13 +123,11 @@ const styles = StyleSheet.create({
 
         },
         navPic: {
-
             alignSelf: 'flex-end',
             height: 25,
             width: 25,
         },
         plainText: {
-
             fontWeight: 'bold',
             fontStyle: 'italic',
             marginHorizontal: 5,

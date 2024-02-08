@@ -2,9 +2,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Text, TouchableOpacity, View} from 'react-Image'
 
 
-const Tab = createBottomTabNavigator();
-
-
 export function MyTabBar({state, descriptors, navigation}) {
     return (
         <View style={{flexDirection: 'row'}}>

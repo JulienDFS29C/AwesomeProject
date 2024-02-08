@@ -1,4 +1,5 @@
 import {
+    ActivityIndicator,
     FlatList,
     Image,
     ImageBackground,
@@ -19,8 +20,6 @@ const OneCocktailMaker = ({
                               name, pic, id, ingredient1, ingredient2, ingredient3, ingredient4,
                               ingredient5, ingredient6, ingredient7, receipe, navigation
                           }) => (
-
-
     <View style={styles.container}>
         <View style={styles.upContainer}>
             <Text style={styles.title}>Details of:</Text><Text style={styles.mainTitle}>{name}</Text>
@@ -28,12 +27,10 @@ const OneCocktailMaker = ({
         </View>
         <View style={styles.optionsLine}>
             <Pressable onPress={() =>
-
                 navigation.goBack()}>
                 <Foundation style={styles.navPic} name="rewind" color='black' size={iconSize}/></Pressable>
 
             <Pressable onPress={() =>
-
                 navigation.navigate("Fav", {id: id})}>
 
 
@@ -74,89 +71,69 @@ const OneCocktailMaker = ({
 )
 
 export function DetailsScreen({navigation}) {
-
-
     console.log("in the Detail")
     const [OneCocktail, setOneCocktail] = useState([]);
+    const [loading, setLoading] = useState(true);
     const route = useRoute();
     let {id} = route.params;
-
-
     useEffect(() => {
         console.log("useEffect update avec ID: ", id);
         getOneAPI();
     }, [id]);
-
-
     useEffect(() => {
         console.log("useeffect update")
         getOneAPI();
-
+        setLoading(false);
     }, [])
-
 
     function getOneAPI() {
         console.log('coucou')
-
-
         console.log('getAPI')
-
         fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
-
             .then(async response => {
                 if (!response.ok) {
                     throw new Error('pas de données cocktail trouvées');
                 }
-
                 const json = await response.json();
-                console.log("IDIND = " + json)
+                console.log(json)
                 setOneCocktail(json.drinks)
-
-
             }).catch(e => {
             console.log('erreur : ', e);
-
         })
-
-
     }
-
 
     /*    *****************************************************************
         ****************************************************************
         ******************************************************************/
-
     return (
-
         <SafeAreaView style={styles.container}>
             <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
 
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    {loading ?
+                        <ActivityIndicator size="large"/> :
+                        <FlatList
 
-
-                    <FlatList
-
-                        data={OneCocktail}
-                        renderItem={({item}) =>
-                            <OneCocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
-                                              navigation={navigation}
-                                              receipe={item.strInstructions}
-                                              ingredient1={item.strIngredient1 === null ? '' : item.strIngredient1}
-                                              ingredient2={item.strIngredient2 === null ? '' : item.strIngredient2}
-                                              ingredient3={item.strIngredient3 === null ? null : item.strIngredient3}
-                                              ingredient4={item.strIngredient4 === null ? null : item.strIngredient4}
-                                              ingredient5={item.strIngredient5 === null ? null : item.strIngredient5}
-                                              ingredient6={item.strIngredient6 === null ? null : item.strIngredient6}
-                                              ingredient7={item.strIngredient7 === null ? null : item.strIngredient7}
-                            />
-                        }
-                        keyExtractor={item => item.idDrink}
-                    />
+                            data={OneCocktail}
+                            renderItem={({item}) =>
+                                <OneCocktailMaker name={item.strDrink} pic={item.strDrinkThumb} id={item.idDrink}
+                                                  navigation={navigation}
+                                                  receipe={item.strInstructions}
+                                                  ingredient1={item.strIngredient1 === null ? '' : item.strIngredient1}
+                                                  ingredient2={item.strIngredient2 === null ? '' : item.strIngredient2}
+                                                  ingredient3={item.strIngredient3 === null ? null : item.strIngredient3}
+                                                  ingredient4={item.strIngredient4 === null ? null : item.strIngredient4}
+                                                  ingredient5={item.strIngredient5 === null ? null : item.strIngredient5}
+                                                  ingredient6={item.strIngredient6 === null ? null : item.strIngredient6}
+                                                  ingredient7={item.strIngredient7 === null ? null : item.strIngredient7}
+                                />
+                            }
+                            keyExtractor={item => item.idDrink}
+                        />}
                 </View>
             </ImageBackground>
         </SafeAreaView>)
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -174,8 +151,6 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         justifyContent: 'center',
-
-
     },
     mainTitle: {
         fontWeight: 'bold',
@@ -184,7 +159,6 @@ const styles = StyleSheet.create({
         marginTop: 25,
         marginBottom: 3
     },
-
     title: {
         fontSize: 20,
         color: 'antiquewhite',
@@ -202,34 +176,22 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginTop: 25,
     },
-
-
     pic: {
         height: 320,
         width: 320,
         borderRadius: 20,
         padding: 5,
-
-
     },
-
-
     optionsLine: {
         flexDirection: 'row',
         justifyContent: 'space-around',
     },
-
-
     navPic: {
         marginHorizontal: 50,
         marginVertical: 10
-
     },
     plainText: {
-
         fontWeight: 'bold',
         fontStyle: 'italic',
-
     }
-
 })

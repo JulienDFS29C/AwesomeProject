@@ -4,10 +4,10 @@ import {useRoute} from "@react-navigation/native";
 import {FadeInView} from "../effects/FadeinView";
 import Foundation from "react-native-vector-icons/Foundation";
 
-
 export function FavoritesScreen({navigation}) {
 
     const [favorites, setFavorites] = useState([]);
+
     const route = useRoute();
     let id = route.params ? route.params.id : null;
     const iconSize = 28
@@ -20,18 +20,14 @@ export function FavoritesScreen({navigation}) {
         );
     };
 
-
     const FavCocktailMaker = ({name, pic, id}) => (
-
 
         <View>
             <FadeInView>
                 <Pressable onPress={() =>
-
                     navigation.navigate('Details', {id: id})}>
                     <Image style={styles.pic}
                            source={{uri: pic}}
-
                     />
                 </Pressable>
                 <View style={styles.optionsLine}>
@@ -44,7 +40,6 @@ export function FavoritesScreen({navigation}) {
         </View>
     )
 
-
     useEffect(() => {
 
         if (id) {
@@ -52,7 +47,6 @@ export function FavoritesScreen({navigation}) {
             getFav();
         }
     }, [id]);
-
 
     function getFav() {
         console.log('coucou')
@@ -74,9 +68,8 @@ export function FavoritesScreen({navigation}) {
                 console.log("IDIND = " + json)
                 const newFavorite = json.drinks[0];
 
-
                 setFavorites(favorites => {
-                    if (favorites.some(favorite => favorite.idDrink === newFavorite.idDrink)) {
+                    if (favorites.some(favorite =>favorite.idDrink === newFavorite.idDrink)) {
                         return favorites;
                     } else {
                         return [...favorites, newFavorite];
@@ -99,26 +92,23 @@ export function FavoritesScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
+            <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
+                {favorites.length <= 0 ? renderDefaultContent() : (
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <View style={styles.upContainer}>
-                        <Text style={styles.mainTitle}>YOUR FAVORITES</Text>
-                        <Text style={styles.title}>Touch any picture for details</Text>
-                        <View>
-                            {favorites.length <= 0 ? renderDefaultContent() : (
-                                <FlatList
-
+                    <Text style={styles.mainTitle}>YOUR FAVORITES</Text>
+                    <Text style={styles.title}>Touch any picture for details</Text>
+                    <FlatList
                                     data={favorites}
-                                    renderItem={({item}) => <FavCocktailMaker name={item.strDrink}
-                                                                              pic={item.strDrinkThumb}
-                                                                              id={item.idDrink}
-                                                                              navigation={navigation}/>}
-                                    keyExtractor={item => item.idDrink}
-                                />
-                            )}
-                        </View></View>
-                </ImageBackground></View>
+                                    renderItem={({item}) =><FavCocktailMaker name={item.strDrink}
+                                                                             pic={item.strDrinkThumb}
+                                                                             id={item.idDrink}
+                                                                             navigation={navigation}/>}
+                                    keyExtractor={item => item.idDrink}/>
+
+                </View></View>)
+                }
+            </ImageBackground>
         </SafeAreaView>
 
     );
@@ -141,7 +131,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
 
-
     },
     upContainer: {
         flexDirection: 'column',
@@ -159,7 +148,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'antiquewhite',
         fontSize: 30,
-        marginTop: 25,
+        marginTop: 70,
         marginBottom: 3
     },
 
@@ -184,7 +173,6 @@ const styles = StyleSheet.create({
         padding: 5,
         marginHorizontal: 15,
 
-
     },
     navPic: {
 
@@ -205,5 +193,20 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontStyle: 'italic',
 
-    }
+    },
+    defaultContainer: {
+        // flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    defaultText: {
+        backgroundColor: 'antiquewhite',
+        borderRadius: 10,
+        fontSize: 18,
+        padding: 5,
+        marginHorizontal: 2,
+
+        color: 'grey',
+    },
 })

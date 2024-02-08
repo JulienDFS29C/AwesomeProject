@@ -1,60 +1,23 @@
 //import * as React from 'react';
 import {useEffect, useState} from "react";
-import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {FadeInView} from '../effects/FadeinView'
-import Foundation from "react-native-vector-icons/Foundation";
+import {ActivityIndicator, FlatList, Image, ImageBackground, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {CocktailMaker} from "../Components/CocktailMaker";
 
-const iconSize = 28;
 const image = '../assets/images/CocktailBG.jpg'
-const CocktailMaker = ({name, pic, id, navigation}) => (
-
-
-    <View style={styles.container}>
-        <FadeInView>
-
-
-            <Pressable onPress={() =>
-
-                navigation.navigate('Details', {id: id})}>
-                <Image style={styles.pic}
-                       source={{uri: pic}}
-
-                />
-
-            </Pressable>
-            <View style={styles.optionsLine}>
-                <Text style={styles.plainText}>{name}</Text>
-                <Pressable onPress={() =>
-
-                    navigation.navigate("Fav", {id: id})}>
-
-
-                    <Foundation style={styles.navPic} name="star" color='black' size={iconSize}/></Pressable>
-
-            </View>
-        </FadeInView>
-    </View>
-)
-
 
 export default function HomeScreen({navigation}) {
 
     console.log("in the HomeScreen")
     let [Cocktails, setCocktails] = useState([]);
-
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         console.log("useeffect update")
         getCockAPI();
-
+        setLoading(false);
     }, [])
 
-
     function getCockAPI() {
-        console.log('coucou')
-
-
-        console.log('getAPI')
 
         fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic`)
 
@@ -73,13 +36,7 @@ export default function HomeScreen({navigation}) {
 
         })
 
-
     }
-
-
-    /*    *****************************************************************
-        ****************************************************************
-        ******************************************************************/
 
     return (
 
@@ -88,10 +45,11 @@ export default function HomeScreen({navigation}) {
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <View style={styles.upContainer}>
                         <Image style={styles.titlePic} source={require('../assets/images/glass2.jpg')}></Image>
-                        <Text style={styles.mainTitle}>  DRINK  MAKER</Text>
+                        <Text style={styles.mainTitle}> DRINK MAKER</Text>
                         <Text style={styles.title}>Touch any picture for details</Text>
                     </View>
-
+                    {loading ?
+                        <ActivityIndicator size="large"/> :
                     <FlatList onEndReached={getCockAPI}
                               onEndReachedThreshold={0.5}
 
@@ -102,13 +60,12 @@ export default function HomeScreen({navigation}) {
                               }
                               keyExtractor={item => item.idDrink}
                     />
-
+                    }
                 </View>
             </ImageBackground>
 
         </SafeAreaView>)
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -126,7 +83,6 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         justifyContent: 'center',
-
 
     },
     upContainer: {
@@ -169,7 +125,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 5,
         marginHorizontal: 15,
-
 
     },
     navPic: {

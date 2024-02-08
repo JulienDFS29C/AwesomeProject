@@ -12,9 +12,7 @@ export function IngredientLookupScreen({navigation}) {
     const route = useRoute();
     let {ingredient} = route.params;
 
-
     let [LookupIngredient, setLookupIngredient] = useState([]);
-
 
     useEffect(() => {
         console.log("useeffect update for ingredient :" + ingredient)
@@ -22,12 +20,7 @@ export function IngredientLookupScreen({navigation}) {
 
     }, [ingredient])
 
-
     function getLookup() {
-
-
-        console.log('getLookup')
-
 
         fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?i=${ingredient}`)
 
@@ -40,14 +33,10 @@ export function IngredientLookupScreen({navigation}) {
                 console.log(json)
                 setLookupIngredient(json.ingredients)
 
-
             }).catch(e => {
             console.log('erreur : ', e);
-
         })
-
     }
-
 
     const renderDefaultContent = () => {
         return (
@@ -57,9 +46,7 @@ export function IngredientLookupScreen({navigation}) {
         );
     };
 
-
     return (
-
 
         <SafeAreaView style={styles.container}>
             <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
@@ -80,7 +67,6 @@ export function IngredientLookupScreen({navigation}) {
                                     /><View style={styles.upContainer}>
                                     <Text style={styles.mainTitle}>{LookupIngredient[0].strIngredient}</Text>
                                     <Text style={styles.desc}>{LookupIngredient[0].strDescription}</Text>
-
                                 </View>
 
                                 </View>
@@ -93,7 +79,6 @@ export function IngredientLookupScreen({navigation}) {
 
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -111,7 +96,6 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         justifyContent: 'center',
-
 
     },
     upContainer: {
@@ -133,7 +117,6 @@ const styles = StyleSheet.create({
         marginTop: 25,
         marginBottom: 3
     },
-
 
     desc: {
         fontSize: 16,

@@ -1,7 +1,6 @@
 import {Button, ImageBackground, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
 import {useState} from "react";
 
-
 const image = '../assets/images/CocktailBG.jpg'
 
 export const SearchForm = ({navigation}) => {
@@ -104,7 +103,6 @@ export const SearchForm = ({navigation}) => {
         </SafeAreaView>
     );
 
-
 }
 const styles = StyleSheet.create({
         container: {
@@ -142,7 +140,6 @@ const styles = StyleSheet.create({
             marginHorizontal: 15
 
         },
-
 
         pic: {
             height: 250,
