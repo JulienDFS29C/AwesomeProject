@@ -2,6 +2,7 @@ import {FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, View,} from "
 import {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from '@react-navigation/native';
 import {CocktailMaker} from "../Components/CocktailMaker";
+import {CocktailFetcher} from "../Components/CocktailFetcher";
 
 const image = '../assets/images/CocktailBG.jpg'
 
@@ -9,34 +10,28 @@ const image = '../assets/images/CocktailBG.jpg'
 export default function TenRandomScreen({navigation}) {
 
     const [TenRandomCocktails, setTenRandomCocktails] = useState([]);
+    const URL = `https://www.thecocktaildb.com/api/json/v2/9973533/randomselection.php`;
 
     useFocusEffect(
         useCallback(() => {
-            const refreshRandom = getRandomAPI();
+            const refreshRandom = CocktailFetcher(URL);
             return () => refreshRandom;
         }, [navigation])
     );
 
     useEffect(() => {
-        console.log("useeffect update")
-        getRandomAPI();
-    }, [useFocusEffect])
+        const fetchData = async () => {
+            try {
+                const data = await CocktailFetcher(URL);
+                setTenRandomCocktails(data);
+            } catch (error) {
+                console.error('Error fetching cocktail data:', error.message);
+            }
+        }
+        fetchData();
 
-    function getRandomAPI() {
+    }, []);
 
-        fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/randomselection.php`)
-
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error('pas de données cocktail trouvées');
-                }
-                const json = await response.json();
-                setTenRandomCocktails(json.drinks)
-
-            }).catch(e => {
-            console.log('erreur : ', e);
-        })
-    }
 
     return (
         <SafeAreaView style={styles.container}>

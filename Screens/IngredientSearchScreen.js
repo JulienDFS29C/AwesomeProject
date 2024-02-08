@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 import Foundation from "react-native-vector-icons/Foundation";
 import {CocktailMaker} from "../Components/CocktailMaker";
+import {CocktailFetcher} from "../Components/CocktailFetcher";
 
 const iconSize = 28;
 
@@ -11,32 +12,23 @@ export function IngredientSearchScreen({navigation}) {
     const route = useRoute();
     let {ingredient} = route.params;
     const [CockailsByIngredient, setCockailsByIngredient] = useState([])
+    const URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`;
     const image = '../assets/images/CocktailBG.jpg'
 
     useEffect(() => {
-        console.log("useEffect update avec ingredient: ", ingredient);
-        getByIngredient();
-    }, [ingredient]);
+        const fetchData = async () => {
+            try {
+                const data = await CocktailFetcher(URL);
+                setCockailsByIngredient(data);
+            } catch (error) {
+                console.error('Error fetching cocktail data:', error.message);
+            }
+        };
+        fetchData();
 
-    function getByIngredient() {
-        console.log('By Ingredient');
-        fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`)
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error('pas de données cocktail trouvées');
-                }
-                console.log(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${ingredient}`)
-                const json = await response.json();
-                console.log("IDIND = " + json)
+    }, []);
 
-                setCockailsByIngredient(json.drinks)
-                console.log("données settées :" + CockailsByIngredient)
-                console.log(json.drinks)
 
-            }).catch(e => {
-            console.log('erreur : ', e);
-        })
-    }
 
     const renderDefaultContent = () => {
         return (

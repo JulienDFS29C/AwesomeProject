@@ -11,7 +11,6 @@ export function IngredientLookupScreen({navigation}) {
 
     const route = useRoute();
     let {ingredient} = route.params;
-
     let [LookupIngredient, setLookupIngredient] = useState([]);
 
     useEffect(() => {

@@ -2,41 +2,33 @@
 import {useEffect, useState} from "react";
 import {ActivityIndicator, FlatList, Image, ImageBackground, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {CocktailMaker} from "../Components/CocktailMaker";
+import { CocktailFetcher } from "../Components/CocktailFetcher";
 
 const image = '../assets/images/CocktailBG.jpg'
-
+const URL = `https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic`;
 export default function HomeScreen({navigation}) {
+
 
     console.log("in the HomeScreen")
     let [Cocktails, setCocktails] = useState([]);
-    const [loading, setLoading] = useState(true);
+    let [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("useeffect update")
-        getCockAPI();
-        setLoading(false);
-    }, [])
+        const fetchData = async () => {
+            try {
+                const data = await CocktailFetcher(URL);
+                setCocktails(data);
+            } catch (error) {
+                console.error('Error fetching cocktail data:', error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
 
-    function getCockAPI() {
-
-        fetch(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?a=Alcoholic`)
-
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error('pas de données cocktail trouvées');
-                }
-
-                const json = await response.json();
-                console.log(json)
-                setCocktails(json.drinks)
+    }, []);
 
 
-            }).catch(e => {
-            console.log('erreur : ', e);
-
-        })
-
-    }
 
     return (
 
@@ -50,7 +42,7 @@ export default function HomeScreen({navigation}) {
                     </View>
                     {loading ?
                         <ActivityIndicator size="large"/> :
-                    <FlatList onEndReached={getCockAPI}
+                    <FlatList onEndReached={CocktailFetcher}
                               onEndReachedThreshold={0.5}
 
                               data={Cocktails}

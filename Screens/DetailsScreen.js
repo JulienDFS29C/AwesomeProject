@@ -13,6 +13,8 @@ import {
 import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 import Foundation from "react-native-vector-icons/Foundation";
+import {CocktailFetcher} from "../Components/CocktailFetcher";
+import {FadeInView} from "../effects/FadeinView";
 
 const image = '../assets/images/CocktailBG.jpg'
 const iconSize = 28;
@@ -20,6 +22,7 @@ const OneCocktailMaker = ({
                               name, pic, id, ingredient1, ingredient2, ingredient3, ingredient4,
                               ingredient5, ingredient6, ingredient7, receipe, navigation
                           }) => (
+    <FadeInView>
     <View style={styles.container}>
         <View style={styles.upContainer}>
             <Text style={styles.title}>Details of:</Text><Text style={styles.mainTitle}>{name}</Text>
@@ -68,43 +71,35 @@ const OneCocktailMaker = ({
 
 
     </View>
+        </FadeInView>
 )
 
 export function DetailsScreen({navigation}) {
     console.log("in the Detail")
+
     const [OneCocktail, setOneCocktail] = useState([]);
     const [loading, setLoading] = useState(true);
     const route = useRoute();
     let {id} = route.params;
-    useEffect(() => {
-        console.log("useEffect update avec ID: ", id);
-        getOneAPI();
-    }, [id]);
-    useEffect(() => {
-        console.log("useeffect update")
-        getOneAPI();
-        setLoading(false);
-    }, [])
+    const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
 
-    function getOneAPI() {
-        console.log('coucou')
-        console.log('getAPI')
-        fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error('pas de données cocktail trouvées');
-                }
-                const json = await response.json();
-                console.log(json)
-                setOneCocktail(json.drinks)
-            }).catch(e => {
-            console.log('erreur : ', e);
-        })
-    }
 
-    /*    *****************************************************************
-        ****************************************************************
-        ******************************************************************/
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await CocktailFetcher(URL);
+                setOneCocktail(data);
+            } catch (error) {
+                console.error('Error fetching cocktail data:', error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+
+    }, []);
+
+
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground blurRadius={1.5} source={require(image)} resizeMode="cover" style={styles.bgImage}>
@@ -142,11 +137,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(95, 158, 160, 0.7)',
         alignItems: 'center',
         justifyContent: 'center',
-        // flexDirection: 'column',
-        // marginTop: 40,
-        // marginVertical: 5,
-        // marginHorizontal: 5,
-        // borderRadius: 20,
+
     },
     bgImage: {
         flex: 1,

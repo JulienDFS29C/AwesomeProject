@@ -2,6 +2,7 @@ import {FlatList, Image, ImageBackground, Pressable, SafeAreaView, StyleSheet, T
 import {useEffect, useState} from "react";
 import {useRoute} from "@react-navigation/native";
 import {CocktailMaker} from "../Components/CocktailMaker";
+import {CocktailFetcher} from "../Components/CocktailFetcher";
 
 const image = '../assets/images/CocktailBG.jpg'
 
@@ -10,33 +11,42 @@ export function NameSearchScreen({navigation}) {
     const route = useRoute();
     let {name} = route.params;
     const [CockailByName, setCockailByName] = useState([])
+    const URL = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`
 
     useEffect(() => {
-        console.log("useEffect update avec name: ", name);
-        getByName();
-    }, [name]);
+        const fetchData = async () => {
+            try {
+                const data = await CocktailFetcher(URL);
+                setCockailByName(data);
+            } catch (error) {
+                console.error('Error fetching cocktail data:', error.message);
+            }
+        };
+        fetchData();
 
-    function getByName() {
-        console.log('By Ingredient');
-        fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`)
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error('pas de données cocktail trouvées');
-                }
-                console.log(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${name}`)
-                const json = await response.json();
-                console.log("IDIND = " + json)
+    }, []);
 
-                setCockailByName(json.drinks)
-                console.log("données settées :" + CockailByName)
-                console.log(json.drinks)
-
-            }).catch(e => {
-            console.log('erreur : ', e);
-
-        })
-
-    }
+    // function getByName() {
+    //     console.log('By Ingredient');
+    //     fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`)
+    //         .then(async response => {
+    //             if (!response.ok) {
+    //                 throw new Error('pas de données cocktail trouvées');
+    //             }
+    //             console.log(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${name}`)
+    //             const json = await response.json();
+    //             console.log("IDIND = " + json)
+    //
+    //             setCockailByName(json.drinks)
+    //             console.log("données settées :" + CockailByName)
+    //             console.log(json.drinks)
+    //
+    //         }).catch(e => {
+    //         console.log('erreur : ', e);
+    //
+    //     })
+    //
+    // }
 
     return (
 
