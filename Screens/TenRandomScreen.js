@@ -14,8 +14,15 @@ export default function TenRandomScreen({navigation}) {
 
     useFocusEffect(
         useCallback(() => {
-            const refreshRandom = CocktailFetcher(URL);
-            return () => refreshRandom;
+            const fetchData = async () => {
+                try {
+                    const data = await CocktailFetcher(URL);
+                    setTenRandomCocktails(data);
+                } catch (error) {
+                    console.error('Error fetching cocktail data:', error.message);
+                }
+            }
+            fetchData();
         }, [navigation])
     );
 
@@ -31,6 +38,8 @@ export default function TenRandomScreen({navigation}) {
         fetchData();
 
     }, []);
+
+
 
 
     return (
